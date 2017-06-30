@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import {getAllUsers} from "../actions/userActions";
+import {fetchAllUsers} from "../actions/userActions";
 
 import UserListComponent from "../ui/UserListComponent.jsx";
 
@@ -11,7 +11,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onGetUserClicked: () => {
-            dispatch(getAllUsers());
+            dispatch(fetchAllUsers());
         }
     };
 };

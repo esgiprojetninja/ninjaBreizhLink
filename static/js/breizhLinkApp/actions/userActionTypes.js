@@ -1,1 +1,3 @@
-export const GET_ALL_USERS = "GET_ALL_USERS";
+export const REQUEST_ALL_USERS = "REQUEST_ALL_USERS";
+export const RECEIVE_ALL_USERS = "RECEIVE_ALL_USERS";
+export const RECEIVE_ERROR = "RECEIVE_ERROR";

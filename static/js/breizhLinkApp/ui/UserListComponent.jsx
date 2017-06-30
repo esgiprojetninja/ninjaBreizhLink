@@ -4,7 +4,6 @@ import T from "prop-types";
 export default class UserListComponent extends React.PureComponent {
 
     render() {
-        console.log(this.props);
         if (this.props.loading) {
             return <p>Loading...</p>;
         }

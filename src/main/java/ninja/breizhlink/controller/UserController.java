@@ -4,12 +4,10 @@ import ninja.breizhlink.model.User;
 import ninja.breizhlink.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin(origins = "http://breizh.link")
 @RequestMapping(path="/user")
 public class UserController {
     @Autowired
@@ -26,6 +24,7 @@ public class UserController {
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
+        System.out.println("==== in get all ====");
         return userRepository.findAll();
     }
 }

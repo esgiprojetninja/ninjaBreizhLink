@@ -13,6 +13,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+
     @GetMapping(path="/add")
     public @ResponseBody String addNewUser(@RequestParam String login, @RequestParam String email) {
         User user = new User();

@@ -5,7 +5,7 @@ import thunkMiddleware from "redux-thunk";
 import {createLogger} from "redux-logger";
 import {createStore, applyMiddleware} from "redux";
 import app from "./breizhLinkApp/reducers/app";
-import BreizhLinkApp from "./breizhLinkApp/BreizhLinkApp.jsx";
+import BreizhLinkApp from "./breizhLinkApp/container/BreizhLinkApp";
 
 const loggerMiddleware = createLogger();
 
@@ -14,6 +14,9 @@ const initialState = {
         users: [],
         loading: false,
         error: ""
+    },
+    view: {
+        id: "url"
     }
 };
 

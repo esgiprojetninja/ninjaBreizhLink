@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 
 import UserList from "../container/UserList";
+import UrlComponent from "./UrlComponent.jsx";
 
 export default class BreizhLinkAppComponent extends React.PureComponent {
     render() {
@@ -48,7 +49,7 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
         const {id} = this.props.view;
         switch(id) {
             case "url":
-                return <h1>URL</h1>;
+                return <UrlComponent />;
             case "user":
                 return <UserList />;
             default:

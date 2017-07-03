@@ -26,7 +26,7 @@ public class UrlController {
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Url> getAllUrl() {
-        System.out.println("=== in get all Urls");
+        System.out.println("=== in get all Urls ===");
         return urlRepository.findAll();
     }
 

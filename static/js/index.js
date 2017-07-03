@@ -17,6 +17,9 @@ const initialState = {
     },
     view: {
         id: "url"
+    },
+    url: {
+        urls: []
     }
 };
 

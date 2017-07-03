@@ -1,0 +1,3 @@
+export const REQUEST_ALL_URLS = "REQUEST_ALL_URLS";
+export const RECEIVE_ALL_URLS = "RECEIVE_ALL_URLS";
+export const RECEIVE_ERROR = "RECEIVE_ERROR";

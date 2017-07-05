@@ -20,7 +20,10 @@ const initialState = {
     },
     url: {
         urls: [],
-        newUrl: ""
+        newUrl: {
+            value: "",
+            password: ""
+        }
     }
 };
 

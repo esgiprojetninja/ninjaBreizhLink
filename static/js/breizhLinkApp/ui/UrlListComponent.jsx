@@ -20,6 +20,7 @@ export default class UrlListComponent extends React.PureComponent {
                             <th>Id</th>
                             <th>Long url</th>
                             <th>Short Url</th>
+                            <th>Password</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,7 @@ export default class UrlListComponent extends React.PureComponent {
                 <td>{u.id}</td>
                 <td>{u.longUrl}</td>
                 <td>{u.shortUrl}</td>
+                <td>{u.password}</td>
             </tr>
         ));
     }

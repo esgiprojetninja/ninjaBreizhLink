@@ -5,6 +5,7 @@ import ninja.breizhlink.model.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Random;
 
@@ -14,12 +15,15 @@ import java.util.Random;
 public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    @GetMapping(path="/add")
-    public @ResponseBody String addNewUrl(@RequestParam String longurl) {
-        Url url = new Url();
-        url.setLongUrl(longurl);
+    @PostMapping(path="/add")
+    public @ResponseBody String addNewUrl(@ModelAttribute Url url) {
         Url savedUrl = urlRepository.save(url);
+        if (url.getPassword().compareTo("") != 0) {
+            passwordEncoder = new BCryptPasswordEncoder();
+            savedUrl.setPassword(passwordEncoder.encode(url.getPassword()));
+        }
         savedUrl.setShortUrl(this.createShortUrl(savedUrl.getId()));
         return urlRepository.save(savedUrl).toString();
     }

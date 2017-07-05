@@ -13,6 +13,7 @@ public class Url {
     private int id;
     private String longUrl;
     private String shortUrl;
+    private String password;
 
     public Url() {
     }
@@ -39,5 +40,13 @@ public class Url {
 
     public void setShortUrl(String shortUrl) {
         this.shortUrl = shortUrl;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

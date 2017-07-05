@@ -16,7 +16,12 @@ const urlAPI = {
     },
     addUrl(url) {
         _addUrl = $.ajax({
-            url: "http://b.li:8080/url/add?longurl=" + url
+            method: "POST",
+            url: "http://b.li:8080/url/add",
+            data: {
+                longUrl: url.value,
+                password: url.password.length > 0 ? url.password : null
+            }
         });
         return wrapRequest(
             _addUrl,

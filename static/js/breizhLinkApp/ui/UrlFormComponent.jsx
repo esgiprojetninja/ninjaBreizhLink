@@ -10,8 +10,18 @@ import {
 
 export default class UrlFormComponent extends React.PureComponent {
 
-    handleChange(e) {
-        this.props.newUrlChanged(e.target.value);
+    handleValueChange(e) {
+        this.props.newUrlChanged({
+            ...this.props.newUrl,
+            value: e.target.value
+        });
+    }
+
+    handlePasswordChange(e) {
+        this.props.newUrlChanged({
+            ...this.props.newUrl,
+            password: e.target.value
+        });
     }
 
     handleSubmit(e) {
@@ -29,9 +39,18 @@ export default class UrlFormComponent extends React.PureComponent {
                     <FormControl
                         type="text"
                         placeholder="Url"
-                        name="longurl"
-                        value={this.props.newUrl}
-                        onChange={this.handleChange.bind(this)}
+                        value={this.props.newUrl.value}
+                        onChange={this.handleValueChange.bind(this)}
+                    />
+                    <HelpBlock>Please enter a valid url</HelpBlock>
+                </FormGroup>
+                <FormGroup>
+                    <ControlLabel>Add a password ?</ControlLabel>
+                    <FormControl
+                        type="password"
+                        placeholder="Password"
+                        value={this.props.newUrl.password}
+                        onChange={this.handlePasswordChange.bind(this)}
                     />
                     <HelpBlock>Please enter a valid url</HelpBlock>
                 </FormGroup>
@@ -44,5 +63,5 @@ export default class UrlFormComponent extends React.PureComponent {
 UrlFormComponent.propTypes = {
     newUrlChanged: T.func.isRequired,
     newUrlSubmitted: T.func.isRequired,
-    newUrl: T.string.isRequired
+    newUrl: T.object.isRequired
 };

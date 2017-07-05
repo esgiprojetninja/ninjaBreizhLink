@@ -19,7 +19,8 @@ const initialState = {
         id: "url"
     },
     url: {
-        urls: []
+        urls: [],
+        newUrl: ""
     }
 };
 

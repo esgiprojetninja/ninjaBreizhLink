@@ -18,6 +18,16 @@ const url = (state = {}, action) => {
                 ...state,
                 loading: action.loading
             };
+        case types.CHANGE_NEW_URL_VALUE:
+            return {
+                ...state,
+                newUrl: action.newValue
+            };
+        case types.REQUEST_CREATE_URL:
+            return {
+                ...state,
+                loading: action.loading
+            };
         default:
             return state;
     }

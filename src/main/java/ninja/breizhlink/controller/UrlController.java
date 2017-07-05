@@ -10,15 +10,15 @@ import java.util.Random;
 
 @Controller
 @CrossOrigin(origins = "http://breizh.link")
-@RequestMapping(path="/url")
+@RequestMapping(path="url")
 public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
 
     @GetMapping(path="/add")
-    public @ResponseBody String addNewUrl(@RequestParam String longUrl) {
+    public @ResponseBody String addNewUrl(@RequestParam String longurl) {
         Url url = new Url();
-        url.setLongUrl(longUrl);
+        url.setLongUrl(longurl);
         Url savedUrl = urlRepository.save(url);
         savedUrl.setShortUrl(this.createShortUrl(savedUrl.getId()));
         return urlRepository.save(savedUrl).toString();
@@ -28,6 +28,12 @@ public class UrlController {
     public @ResponseBody Iterable<Url> getAllUrl() {
         System.out.println("=== in get all Urls ===");
         return urlRepository.findAll();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{shortUrl}")
+    public String redirect(@PathVariable String shortUrl) {
+        Url url = urlRepository.findByShortUrl(shortUrl);
+        return "redirect:" + url.getLongUrl();
     }
 
      private String createShortUrl(int id) {

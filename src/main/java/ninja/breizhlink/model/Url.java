@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class Url {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private int id;
+    private Long id;
     private String longUrl;
     private String shortUrl;
     private String password;
@@ -18,11 +18,11 @@ public class Url {
     public Url() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

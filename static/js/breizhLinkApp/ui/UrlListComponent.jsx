@@ -40,7 +40,7 @@ export default class UrlListComponent extends React.PureComponent {
             <tr key={u.id}>
                 <td>{u.id}</td>
                 <td>{u.longUrl}</td>
-                <td>{u.shortUrl}</td>
+                <td><a href={"http://b.li:8080/url/" + u.shortUrl} target="blank">{u.shortUrl}</a></td>
                 <td>{u.password}</td>
             </tr>
         ));

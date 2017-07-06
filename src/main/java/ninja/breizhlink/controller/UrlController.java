@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.ui.Model;
 
 import java.util.Random;
 
@@ -30,17 +31,35 @@ public class UrlController {
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Url> getAllUrl() {
-        System.out.println("=== in get all Urls ===");
         return urlRepository.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{shortUrl}")
-    public String redirect(@PathVariable String shortUrl) {
+    @RequestMapping("/{shortUrl}")
+    public String handleRedirect(@PathVariable String shortUrl) {
         Url url = urlRepository.findByShortUrl(shortUrl);
+        if (url.getPassword() != null) {
+            return "redirect:/url/pwd/" + url.getId();
+        }
         return "redirect:" + url.getLongUrl();
     }
 
-     private String createShortUrl(int id) {
+    @GetMapping("/pwd/{id}")
+    public String handleGetUrlPwd(@PathVariable Long id, Model model) {
+        model.addAttribute("url_id", id);
+        return "redirect_w_pwd";
+    }
+
+    @PostMapping("/pwd")
+    public String handlePostUrlPwd(@RequestParam("password") String password, @RequestParam("url_id") Long id) {
+        Url url = urlRepository.findOne(id);
+        passwordEncoder = new BCryptPasswordEncoder();
+        if(passwordEncoder.matches(password, url.getPassword())) {
+            return "redirect:" + url.getLongUrl();
+        }
+        return "redirect:/url/pwd/" + url.getId();
+    }
+
+     private String createShortUrl(Long id) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();

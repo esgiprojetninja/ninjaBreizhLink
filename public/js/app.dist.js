@@ -56211,7 +56211,11 @@ var UrlListComponent = function (_React$PureComponent) {
                     _react2.default.createElement(
                         "td",
                         null,
-                        u.shortUrl
+                        _react2.default.createElement(
+                            "a",
+                            { href: "http://b.li:8080/url/" + u.shortUrl, target: "blank" },
+                            u.shortUrl
+                        )
                     ),
                     _react2.default.createElement(
                         "td",

@@ -21,7 +21,7 @@ public class UrlController {
     @PostMapping(path="/add")
     public @ResponseBody String addNewUrl(@ModelAttribute Url url) {
         Url savedUrl = urlRepository.save(url);
-        if (url.getPassword().compareTo("") != 0) {
+        if (url.getUsePwd()) {
             passwordEncoder = new BCryptPasswordEncoder();
             savedUrl.setPassword(passwordEncoder.encode(url.getPassword()));
         }
@@ -37,7 +37,7 @@ public class UrlController {
     @RequestMapping("/{shortUrl}")
     public String handleRedirect(@PathVariable String shortUrl) {
         Url url = urlRepository.findByShortUrl(shortUrl);
-        if (url.getPassword() != null) {
+        if (url.getUsePwd()) {
             return "redirect:/url/pwd/" + url.getId();
         }
         return "redirect:" + url.getLongUrl();

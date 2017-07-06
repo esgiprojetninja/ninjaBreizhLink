@@ -14,6 +14,7 @@ public class Url {
     private String longUrl;
     private String shortUrl;
     private String password;
+    private Boolean usePwd;
 
     public Url() {
     }
@@ -48,5 +49,13 @@ public class Url {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getUsePwd() {
+        return usePwd;
+    }
+
+    public void setUsePwd(Boolean usePwd) {
+        this.usePwd = usePwd;
     }
 }

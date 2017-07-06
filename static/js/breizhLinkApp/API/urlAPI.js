@@ -20,7 +20,8 @@ const urlAPI = {
             url: "http://b.li:8080/url/add",
             data: {
                 longUrl: url.value,
-                password: url.password.length > 0 ? url.password : null
+                password: url.password.length > 0 ? url.password : null,
+                usePwd: url.usePwd
             }
         });
         return wrapRequest(

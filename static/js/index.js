@@ -22,7 +22,8 @@ const initialState = {
         urls: [],
         newUrl: {
             value: "",
-            password: ""
+            password: "",
+            usePwd: false
         }
     }
 };

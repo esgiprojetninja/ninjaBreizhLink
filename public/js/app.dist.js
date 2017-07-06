@@ -55359,7 +55359,8 @@ var urlAPI = {
             url: "http://b.li:8080/url/add",
             data: {
                 longUrl: url.value,
-                password: url.password.length > 0 ? url.password : null
+                password: url.password.length > 0 ? url.password : null,
+                usePwd: url.usePwd
             }
         });
         return (0, _apiUtils.wrapRequest)(_addUrl, function (data) {
@@ -56019,6 +56020,13 @@ var UrlFormComponent = function (_React$PureComponent) {
             }));
         }
     }, {
+        key: "handleUsePwdChange",
+        value: function handleUsePwdChange(e) {
+            this.props.newUrlChanged(_extends({}, this.props.newUrl, {
+                usePwd: e.target.checked
+            }));
+        }
+    }, {
         key: "handleSubmit",
         value: function handleSubmit(e) {
             e.preventDefault();
@@ -56056,6 +56064,30 @@ var UrlFormComponent = function (_React$PureComponent) {
                     _reactBootstrap.FormGroup,
                     null,
                     _react2.default.createElement(
+                        _reactBootstrap.Checkbox,
+                        {
+                            onChange: this.handleUsePwdChange.bind(this),
+                            value: this.props.newUrl.usePwd
+                        },
+                        "Protect whit a password ?"
+                    )
+                ),
+                this.renderPasswordInput(),
+                _react2.default.createElement(
+                    _reactBootstrap.Button,
+                    { bsStyle: "success", type: "submit" },
+                    "Shorten"
+                )
+            );
+        }
+    }, {
+        key: "renderPasswordInput",
+        value: function renderPasswordInput() {
+            if (this.props.newUrl.usePwd) {
+                return _react2.default.createElement(
+                    _reactBootstrap.FormGroup,
+                    null,
+                    _react2.default.createElement(
                         _reactBootstrap.ControlLabel,
                         null,
                         "Add a password ?"
@@ -56071,13 +56103,8 @@ var UrlFormComponent = function (_React$PureComponent) {
                         null,
                         "Please enter a valid url"
                     )
-                ),
-                _react2.default.createElement(
-                    _reactBootstrap.Button,
-                    { bsStyle: "success", type: "submit" },
-                    "Shorten"
-                )
-            );
+                );
+            }
         }
     }]);
 
@@ -56420,7 +56447,8 @@ var initialState = {
         urls: [],
         newUrl: {
             value: "",
-            password: ""
+            password: "",
+            usePwd: false
         }
     }
 };

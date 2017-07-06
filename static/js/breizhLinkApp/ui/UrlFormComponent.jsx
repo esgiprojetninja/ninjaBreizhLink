@@ -1,11 +1,12 @@
 import React from "react";
 import T from "prop-types";
 import {
-    FormGroup,
+    Button,
+    Checkbox,
     ControlLabel,
     FormControl,
-    HelpBlock,
-    Button
+    FormGroup,
+    HelpBlock
 } from "react-bootstrap";
 
 export default class UrlFormComponent extends React.PureComponent {
@@ -21,6 +22,13 @@ export default class UrlFormComponent extends React.PureComponent {
         this.props.newUrlChanged({
             ...this.props.newUrl,
             password: e.target.value
+        });
+    }
+
+    handleUsePwdChange(e) {
+        this.props.newUrlChanged({
+            ...this.props.newUrl,
+            usePwd: e.target.checked
         });
     }
 
@@ -45,6 +53,23 @@ export default class UrlFormComponent extends React.PureComponent {
                     <HelpBlock>Please enter a valid url</HelpBlock>
                 </FormGroup>
                 <FormGroup>
+                    <Checkbox
+                        onChange={this.handleUsePwdChange.bind(this)}
+                        value={this.props.newUrl.usePwd}
+                    >
+                        Protect whit a password ?
+                    </Checkbox>
+                </FormGroup>
+                {this.renderPasswordInput()}
+                <Button bsStyle="success" type="submit">Shorten</Button>
+            </form>
+        );
+    }
+
+    renderPasswordInput() {
+        if (this.props.newUrl.usePwd) {
+            return (
+                <FormGroup>
                     <ControlLabel>Add a password ?</ControlLabel>
                     <FormControl
                         type="password"
@@ -54,9 +79,8 @@ export default class UrlFormComponent extends React.PureComponent {
                     />
                     <HelpBlock>Please enter a valid url</HelpBlock>
                 </FormGroup>
-                <Button bsStyle="success" type="submit">Shorten</Button>
-            </form>
-        );
+            );
+        }
     }
 }
 

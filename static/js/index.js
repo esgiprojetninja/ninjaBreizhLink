@@ -15,9 +15,7 @@ const initialState = {
         loading: false,
         error: ""
     },
-    view: {
-        id: "url"
-    },
+    view: "url",
     url: {
         urls: [],
         newUrl: {

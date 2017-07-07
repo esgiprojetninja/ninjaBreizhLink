@@ -12,6 +12,11 @@ import UserList from "../container/UserList";
 import UrlComponent from "./UrlComponent.jsx";
 
 export default class BreizhLinkAppComponent extends React.PureComponent {
+
+    handleSwitchView(view) {
+        this.props.switchView(view);
+    }
+
     render() {
         return (
             <div>
@@ -24,8 +29,18 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-                            <NavItem eventKey={1} href="#">Link</NavItem>
-                            <NavItem eventKey={2} href="#">Link</NavItem>
+                            <NavItem
+                                eventKey={1}
+                                onClick={this.handleSwitchView.bind(this, "url")}
+                            >
+                                Urls
+                            </NavItem>
+                            <NavItem
+                                eventKey={2}
+                                onClick={this.handleSwitchView.bind(this, "user")}
+                            >
+                                Connect
+                            </NavItem>
                             <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
                                 <MenuItem eventKey={3.1}>Action</MenuItem>
                                 <MenuItem eventKey={3.2}>Another action</MenuItem>
@@ -46,8 +61,7 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
     }
 
     renderView() {
-        const {id} = this.props.view;
-        switch(id) {
+        switch(this.props.view) {
             case "url":
                 return <UrlComponent />;
             case "user":
@@ -59,7 +73,6 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
 }
 
 BreizhLinkAppComponent.propTypes = {
-    view: T.shape({
-        id: T.string.isRequired
-    }).isRequired
+    view: T.string.isRequired,
+    switchView: T.func.isRequired
 };

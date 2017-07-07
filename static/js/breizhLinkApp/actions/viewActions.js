@@ -1,7 +1,7 @@
 export const CHANGE_VIEW = "CHANGE_VIEW";
-export const changeView = (viewId) => {
+export const changeView = (view) => {
     return {
         type: CHANGE_VIEW,
-        viewId
+        view
     };
 };

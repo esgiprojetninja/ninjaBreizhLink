@@ -1,5 +1,6 @@
 import {connect} from "react-redux";
 
+import {changeView} from "../actions/viewActions";
 import BreizhLinkAppComponent from "../ui/BreizhLinkAppComponent.jsx";
 
 
@@ -10,7 +11,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        switchView: (view) => {
+            dispatch(changeView(view));
+        }
+    };
 };
 
 const BreizhLinkApp = connect(

@@ -1,15 +1,23 @@
 import React from "react";
 import T from "prop-types";
+import {
+    Panel,
+    Table
+} from "react-bootstrap";
 
 export default class UserListComponent extends React.PureComponent {
+
+    componentDidMount() {
+        this.props.onGetUserClicked();
+    }
 
     render() {
         if (this.props.loading) {
             return <p>Loading...</p>;
         }
         return (
-            <div>
-                <table>
+            <Panel header={<h3>User list</h3>}>
+                <Table>
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -20,14 +28,14 @@ export default class UserListComponent extends React.PureComponent {
                     <tbody>
                         {this.renderUsers()}
                     </tbody>
-                </table>
+                </Table>
                 <button
                     type="button"
                     onClick={this.props.onGetUserClicked}
                 >
                     Get users
                 </button>
-            </div>
+            </Panel>
         );
     }
 

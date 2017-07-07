@@ -1,4 +1,5 @@
 import {
+    CHANGE_NEW_USER,
     REQUEST_ALL_USERS,
     RECEIVE_ALL_USERS,
     RECEIVE_ERROR
@@ -29,13 +30,29 @@ const receiveError = (error) => {
     };
 };
 
-export function fetchAllUsers(users) {
+export const changeNewUser = (newValue) => {
+    return {
+        type: CHANGE_NEW_USER,
+        newValue
+    };
+};
+
+export function fetchAllUsers() {
     return function (dispatch) {
         dispatch(requestAllUsers());
-        console.log(userAPI.fetAll());
-        return userAPI.fetAll().then(
+        return userAPI.fetchAll().then(
                 (data) => dispatch(receiveAllUsers(data)),
                 (reason) => dispatch(receiveError(reason))
             );
+    };
+}
+
+export function addNewUser(user) {
+    return function (dispatch) {
+        // TODO dispatch loading
+        return userAPI.addUser(user).then(
+            (data) => dispatch(fetchAllUsers()),
+            (reason) => dispatch(receiveError(reason))
+        );
     };
 }

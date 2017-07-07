@@ -8,7 +8,7 @@ import {
     NavItem
 } from "react-bootstrap";
 
-import UserList from "../container/UserList";
+import UserComponent from "./UserComponent.jsx";
 import UrlComponent from "./UrlComponent.jsx";
 
 export default class BreizhLinkAppComponent extends React.PureComponent {
@@ -65,7 +65,7 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
             case "url":
                 return <UrlComponent />;
             case "user":
-                return <UserList />;
+                return <UserComponent />;
             default:
                 return <h1>OOPS !</h1>;
         }

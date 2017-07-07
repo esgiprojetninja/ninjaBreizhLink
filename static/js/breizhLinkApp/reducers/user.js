@@ -18,6 +18,11 @@ const user = (state = {}, action) => {
                 ...state,
                 loading: action.loading
             };
+        case types.CHANGE_NEW_USER:
+            return {
+                ...state,
+                newUser: action.newValue
+            };
         default:
             return state;
     }

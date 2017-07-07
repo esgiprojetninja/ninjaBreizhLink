@@ -1,9 +1,6 @@
 package ninja.breizhlink.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -12,7 +9,9 @@ public class User {
     private int id;
     private String email;
     private String login;
-    private String pwd;
+    private String password;
+    @Transient
+    private String passwordConfirm;
 
     public User() {
     }
@@ -41,12 +40,20 @@ public class User {
         this.login = login;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     @Override
@@ -55,7 +62,7 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", login='" + login + '\'' +
-                ", pwd='" + pwd + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

@@ -19,13 +19,13 @@ public class UserController {
 
 
     @PostMapping(path="/add")
-    public @ResponseBody ResponseEntity addNewUser(@ModelAttribute User user, String passwordConfirm) {
+    public @ResponseBody ResponseEntity addNewUser(@ModelAttribute User user) {
         User userToSave = new User();
-        if (user.getPwd().compareTo(passwordConfirm) == 0) {
+        if (user.getPassword().compareTo(user.getPasswordConfirm()) == 0) {
             passwordEncoder = new BCryptPasswordEncoder();
             userToSave.setLogin(user.getLogin());
             userToSave.setEmail(user.getEmail());
-            userToSave.setPwd(passwordEncoder.encode(user.getPwd()));
+            userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userRepository.save(userToSave);
             if (savedUser != null) {
                 return new ResponseEntity<>(savedUser, HttpStatus.OK);

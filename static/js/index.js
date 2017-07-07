@@ -13,9 +13,15 @@ const initialState = {
     user: {
         users: [],
         loading: false,
-        error: ""
+        error: "",
+        newUser: {
+            login: "",
+            email: "",
+            password: "",
+            passwordConfirm: ""
+        }
     },
-    view: "url",
+    view: "user",
     url: {
         urls: [],
         newUrl: {

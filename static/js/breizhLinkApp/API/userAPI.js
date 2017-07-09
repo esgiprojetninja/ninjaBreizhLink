@@ -18,9 +18,7 @@ const userAPI = {
         _addUser = $.ajax({
             method: "POST",
             url: "http://localhost:8080/user/add/",
-            data: {
-                user: user
-            }
+            data: user
         });
         return wrapRequest(
             _addUser,

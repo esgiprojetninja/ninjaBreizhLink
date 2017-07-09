@@ -21,6 +21,7 @@ public class UserController {
     @PostMapping(path="/add")
     public @ResponseBody ResponseEntity addNewUser(@ModelAttribute User user) {
         User userToSave = new User();
+        System.out.println(user.toString());
         if (user.getPassword().compareTo(user.getPasswordConfirm()) == 0) {
             passwordEncoder = new BCryptPasswordEncoder();
             userToSave.setLogin(user.getLogin());

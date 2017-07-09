@@ -101,18 +101,21 @@ export default class LogBoxComponent extends React.PureComponent {
                             type="email"
                             label="Email"
                             placeholder="Email..."
+                            onChange={this.handleNewUserChanged.bind(this)}
                         />
                         <FieldGroup
-                            id="pwd"
+                            id="password"
                             type="password"
                             label="Password"
                             placeholder="Password..."
+                            onChange={this.handleNewUserChanged.bind(this)}
                         />
                         <FieldGroup
-                            id="pwd_confirm"
+                            id="passwordConfirm"
                             type="password"
                             label="Confirm password"
                             placeholder="Confirm password..."
+                            onChange={this.handleNewUserChanged.bind(this)}
                         />
                         <Button bsStyle="primary" type="submit">Save</Button>
                     </form>

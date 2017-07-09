@@ -35,9 +35,20 @@ export default class LogBoxComponent extends React.PureComponent {
         this.props.onNewUserChanged(newValue);
     }
 
+    handlecurrentChanged(e) {
+        const newValue = {...this.props.currentUser.user};
+        newValue[e.target.id] = e.target.value;
+        this.props.onCurrentUserChanged(newValue);
+    }
+
     handelSubscribeSubmit(e) {
         e.preventDefault();
         this.props.onSubscribeSubmit(this.props.newUser);
+    }
+
+    handleLoginSubmit(e) {
+        e.preventDefault();
+        this.props.onLoginSubmit(this.props.currentUser.user);
     }
 
     render() {
@@ -58,20 +69,22 @@ export default class LogBoxComponent extends React.PureComponent {
                 <Panel
                     header={<h3>Login</h3>}
                 >
-                    <form>
+                    <form onSubmit={this.handleLoginSubmit.bind(this)}>
                         <FieldGroup
-                            id="login"
-                            type="text"
-                            label="Login"
-                            placeholder="Login..."
+                            id="email"
+                            type="email"
+                            label="Email"
+                            placeholder="Email..."
+                            onChange={this.handlecurrentChanged.bind(this)}
                         />
                         <FieldGroup
-                            id="pwd"
+                            id="password"
                             type="password"
                             label="Password"
                             placeholder="Password..."
+                            onChange={this.handlecurrentChanged.bind(this)}
                         />
-                        <Button bsStyle="primary">Save</Button>
+                        <Button bsStyle="primary" type="submit">Save</Button>
                     </form>
                 </Panel>
             </Col>
@@ -131,6 +144,18 @@ LogBoxComponent.propTypes = {
         email: T.string.isRequired,
         password: T.string.isRequired
     }).isRequired,
+    currentUser: T.shape({
+        user: T.shape({
+            login: T.string.isRequired,
+            email: T.string.isRequired,
+            password: T.string.isRequired,
+            sessionId: T.string.isRequired
+        }).isRequired,
+        error: T.string.isRequired,
+        loading: T.bool.isRequired
+    }).isRequired,
     onNewUserChanged: T.func.isRequired,
-    onSubscribeSubmit: T.func.isRequired
+    onSubscribeSubmit: T.func.isRequired,
+    onCurrentUserChanged: T.func.isRequired,
+    onLoginSubmit: T.func.isRequired
 };

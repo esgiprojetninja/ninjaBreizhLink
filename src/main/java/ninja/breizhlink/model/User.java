@@ -7,11 +7,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
+    @Column(unique = true)
     private String email;
     private String login;
     private String password;
     @Transient
     private String passwordConfirm;
+    private String sessionID;
 
     public User() {
     }
@@ -54,6 +56,14 @@ public class User {
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
     }
 
     @Override

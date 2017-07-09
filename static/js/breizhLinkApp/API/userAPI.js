@@ -1,7 +1,7 @@
 import $ from "jquery";
 import {wrapRequest} from "./apiUtils";
 
-let _fetchAll, _addUser;
+let _fetchAll, _addUser, _login;
 
 const userAPI = {
     fetchAll() {
@@ -22,6 +22,18 @@ const userAPI = {
         });
         return wrapRequest(
             _addUser,
+            data => data,
+            error => error
+        );
+    },
+    login(user) {
+        _login = $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/user/login/",
+            data: user
+        });
+        return wrapRequest(
+            _login,
             data => data,
             error => error
         );

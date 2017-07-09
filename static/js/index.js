@@ -19,6 +19,16 @@ const initialState = {
             email: "",
             password: "",
             passwordConfirm: ""
+        },
+        currentUser: {
+            user: {
+                login: "",
+                email: "",
+                password: "",
+                sessionId: ""
+            },
+            error: "",
+            loading: false
         }
     },
     view: "user",

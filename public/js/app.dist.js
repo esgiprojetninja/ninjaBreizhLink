@@ -29802,9 +29802,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var REQUEST_ALL_USERS = exports.REQUEST_ALL_USERS = "REQUEST_ALL_USERS";
+var REQUEST_LOGIN = exports.REQUEST_LOGIN = "REQUEST_LOGIN";
 var RECEIVE_ALL_USERS = exports.RECEIVE_ALL_USERS = "RECEIVE_ALL_USERS";
 var RECEIVE_ERROR = exports.RECEIVE_ERROR = "RECEIVE_ERROR";
 var CHANGE_NEW_USER = exports.CHANGE_NEW_USER = "CHANGE_NEW_USER";
+var LOGIN_SUCCESS = exports.LOGIN_SUCCESS = "LOGIN_SUCCESS";
+var LOGIN_ERROR = exports.LOGIN_ERROR = "LOGIN_ERROR";
+var CHANGE_CURRENT_USER = exports.CHANGE_CURRENT_USER = "CHANGE_CURRENT_USER";
 
 /***/ }),
 /* 222 */
@@ -29816,9 +29820,10 @@ var CHANGE_NEW_USER = exports.CHANGE_NEW_USER = "CHANGE_NEW_USER";
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.changeNewUser = undefined;
+exports.changeCurrentUser = exports.changeNewUser = undefined;
 exports.fetchAllUsers = fetchAllUsers;
 exports.addNewUser = addNewUser;
+exports.login = login;
 
 var _userActionTypes = __webpack_require__(221);
 
@@ -29876,6 +29881,47 @@ function addNewUser(user) {
             return dispatch(fetchAllUsers());
         }, function (reason) {
             return dispatch(receiveError(reason));
+        });
+    };
+}
+
+var changeCurrentUser = exports.changeCurrentUser = function changeCurrentUser(user) {
+    return {
+        type: _userActionTypes.CHANGE_CURRENT_USER,
+        user: user
+    };
+};
+
+var requestLogin = function requestLogin() {
+    return {
+        type: _userActionTypes.REQUEST_LOGIN,
+        loading: true
+    };
+};
+
+var loginSuccess = function loginSuccess(user) {
+    return {
+        type: _userActionTypes.LOGIN_SUCCESS,
+        loading: false,
+        user: user
+    };
+};
+
+var loginError = function loginError(reason) {
+    return {
+        type: _userActionTypes.LOGIN_ERROR,
+        loading: false,
+        error: reason
+    };
+};
+
+function login(user) {
+    return function (dispatch) {
+        dispatch(requestLogin());
+        return _userAPI2.default.login(user).then(function (data) {
+            return dispatch(loginSuccess(data));
+        }, function (reason) {
+            return dispatch(loginError(reason));
         });
     };
 }
@@ -55492,7 +55538,8 @@ var _apiUtils = __webpack_require__(218);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _fetchAll = void 0,
-    _addUser = void 0;
+    _addUser = void 0,
+    _login = void 0;
 
 var userAPI = {
     fetchAll: function fetchAll() {
@@ -55512,6 +55559,18 @@ var userAPI = {
             data: user
         });
         return (0, _apiUtils.wrapRequest)(_addUser, function (data) {
+            return data;
+        }, function (error) {
+            return error;
+        });
+    },
+    login: function login(user) {
+        _login = _jquery2.default.ajax({
+            method: "POST",
+            url: "http://localhost:8080/user/login/",
+            data: user
+        });
+        return (0, _apiUtils.wrapRequest)(_login, function (data) {
             return data;
         }, function (error) {
             return error;
@@ -55544,7 +55603,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        newUser: state.user.newUser
+        newUser: state.user.newUser,
+        currentUser: state.user.currentUser
     };
 };
 
@@ -55555,6 +55615,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         onSubscribeSubmit: function onSubscribeSubmit(user) {
             dispatch((0, _userActions.addNewUser)(user));
+        },
+        onCurrentUserChanged: function onCurrentUserChanged(user) {
+            dispatch((0, _userActions.changeCurrentUser)(user));
+        },
+        onLoginSubmit: function onLoginSubmit(user) {
+            dispatch((0, _userActions.login)(user));
         }
     };
 };
@@ -55771,6 +55837,33 @@ var user = function user() {
         case types.CHANGE_NEW_USER:
             return _extends({}, state, {
                 newUser: action.newValue
+            });
+        case types.CHANGE_CURRENT_USER:
+            return _extends({}, state, {
+                currentUser: _extends({}, state.currentUser, {
+                    user: action.user
+                })
+            });
+        case types.REQUEST_LOGIN:
+            return _extends({}, state, {
+                currentUser: _extends({}, state.currentUser, {
+                    loading: action.loading
+                })
+            });
+        case types.LOGIN_ERROR:
+            return _extends({}, state, {
+                currentUser: _extends({}, state.currentUser, {
+                    loading: action.loading,
+                    error: action.error
+                })
+            });
+        case types.LOGIN_SUCCESS:
+            return _extends({}, state, {
+                currentUSer: _extends({}, state.currentUSer, {
+                    loading: action.loading,
+                    error: "",
+                    user: action.user
+                })
             });
         default:
             return state;
@@ -56063,10 +56156,23 @@ var LogBoxComponent = function (_React$PureComponent) {
             this.props.onNewUserChanged(newValue);
         }
     }, {
+        key: "handlecurrentChanged",
+        value: function handlecurrentChanged(e) {
+            var newValue = _extends({}, this.props.currentUser.user);
+            newValue[e.target.id] = e.target.value;
+            this.props.onCurrentUserChanged(newValue);
+        }
+    }, {
         key: "handelSubscribeSubmit",
         value: function handelSubscribeSubmit(e) {
             e.preventDefault();
             this.props.onSubscribeSubmit(this.props.newUser);
+        }
+    }, {
+        key: "handleLoginSubmit",
+        value: function handleLoginSubmit(e) {
+            e.preventDefault();
+            this.props.onLoginSubmit(this.props.currentUser.user);
         }
     }, {
         key: "render",
@@ -56098,22 +56204,24 @@ var LogBoxComponent = function (_React$PureComponent) {
                     },
                     _react2.default.createElement(
                         "form",
-                        null,
+                        { onSubmit: this.handleLoginSubmit.bind(this) },
                         _react2.default.createElement(FieldGroup, {
-                            id: "login",
-                            type: "text",
-                            label: "Login",
-                            placeholder: "Login..."
+                            id: "email",
+                            type: "email",
+                            label: "Email",
+                            placeholder: "Email...",
+                            onChange: this.handlecurrentChanged.bind(this)
                         }),
                         _react2.default.createElement(FieldGroup, {
-                            id: "pwd",
+                            id: "password",
                             type: "password",
                             label: "Password",
-                            placeholder: "Password..."
+                            placeholder: "Password...",
+                            onChange: this.handlecurrentChanged.bind(this)
                         }),
                         _react2.default.createElement(
                             _reactBootstrap.Button,
-                            { bsStyle: "primary" },
+                            { bsStyle: "primary", type: "submit" },
                             "Save"
                         )
                     )
@@ -56193,8 +56301,20 @@ LogBoxComponent.propTypes = {
         email: _propTypes2.default.string.isRequired,
         password: _propTypes2.default.string.isRequired
     }).isRequired,
+    currentUser: _propTypes2.default.shape({
+        user: _propTypes2.default.shape({
+            login: _propTypes2.default.string.isRequired,
+            email: _propTypes2.default.string.isRequired,
+            password: _propTypes2.default.string.isRequired,
+            sessionId: _propTypes2.default.string.isRequired
+        }).isRequired,
+        error: _propTypes2.default.string.isRequired,
+        loading: _propTypes2.default.bool.isRequired
+    }).isRequired,
     onNewUserChanged: _propTypes2.default.func.isRequired,
-    onSubscribeSubmit: _propTypes2.default.func.isRequired
+    onSubscribeSubmit: _propTypes2.default.func.isRequired,
+    onCurrentUserChanged: _propTypes2.default.func.isRequired,
+    onLoginSubmit: _propTypes2.default.func.isRequired
 };
 
 /***/ }),
@@ -56809,6 +56929,16 @@ var initialState = {
             email: "",
             password: "",
             passwordConfirm: ""
+        },
+        currentUser: {
+            user: {
+                login: "",
+                email: "",
+                password: "",
+                sessionId: ""
+            },
+            error: "",
+            loading: false
         }
     },
     view: "user",

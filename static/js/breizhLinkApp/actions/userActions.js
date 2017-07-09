@@ -1,8 +1,12 @@
 import {
     CHANGE_NEW_USER,
     REQUEST_ALL_USERS,
+    REQUEST_LOGIN,
+    LOGIN_SUCCESS,
+    LOGIN_ERROR,
     RECEIVE_ALL_USERS,
-    RECEIVE_ERROR
+    RECEIVE_ERROR,
+    CHANGE_CURRENT_USER
 } from "./userActionTypes";
 import userAPI from "../API/userAPI";
 
@@ -53,6 +57,46 @@ export function addNewUser(user) {
         return userAPI.addUser(user).then(
             (data) => dispatch(fetchAllUsers()),
             (reason) => dispatch(receiveError(reason))
+        );
+    };
+}
+
+export const changeCurrentUser = (user) => {
+    return {
+        type: CHANGE_CURRENT_USER,
+        user
+    };
+};
+
+const requestLogin = () => {
+    return {
+        type: REQUEST_LOGIN,
+        loading: true
+    };
+};
+
+const loginSuccess = user => {
+    return {
+        type: LOGIN_SUCCESS,
+        loading: false,
+        user: user
+    };
+};
+
+const loginError = reason => {
+    return {
+        type: LOGIN_ERROR,
+        loading: false,
+        error: reason
+    };
+};
+
+export function login(user) {
+    return function (dispatch) {
+        dispatch(requestLogin());
+        return userAPI.login(user).then(
+            data => dispatch(loginSuccess(data)),
+            reason => dispatch(loginError(reason))
         );
     };
 }

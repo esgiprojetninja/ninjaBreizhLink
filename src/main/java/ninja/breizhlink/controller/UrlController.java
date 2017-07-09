@@ -7,7 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Controller
@@ -17,6 +20,11 @@ public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
     private BCryptPasswordEncoder passwordEncoder;
+
+    public static HttpSession session() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return attr.getRequest().getSession(true);
+    }
 
     @PostMapping(path="/add")
     public @ResponseBody String addNewUrl(@ModelAttribute Url url) {

@@ -25,7 +25,7 @@ const initialState = {
                 login: "",
                 email: "",
                 password: "",
-                sessionId: ""
+                sessionID: ""
             },
             error: "",
             loading: false

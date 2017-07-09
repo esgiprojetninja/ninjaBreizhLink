@@ -2,6 +2,7 @@ package ninja.breizhlink.controller;
 
 import ninja.breizhlink.model.User;
 import ninja.breizhlink.model.repository.UserRepository;
+import ninja.breizhlink.utils.SessionIdentifierGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    private SessionIdentifierGenerator sessionIdentifierGenerator;
 
     public static HttpSession session() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -55,12 +57,17 @@ public class UserController {
     public @ResponseBody
     ResponseEntity login(@ModelAttribute User user) {
         System.out.println("== in login ==");
-        System.out.println(user.getPassword());
         User userToLog = userRepository.findByEmail(user.getEmail());
-        System.out.println(userToLog.getPassword());
         passwordEncoder = new BCryptPasswordEncoder();
         if (userToLog == null || !passwordEncoder.matches(user.getPassword(), userToLog.getPassword())) {
             return new ResponseEntity<>("Couldn't log you in", HttpStatus.UNAUTHORIZED);
+        }
+        sessionIdentifierGenerator = new SessionIdentifierGenerator();
+        userToLog.setSessionID(sessionIdentifierGenerator.nextSessionId());
+        session().setAttribute("sessionId", userToLog.getSessionID());
+        User savedUser = userRepository.save(userToLog);
+        if (savedUser == null) {
+            return new ResponseEntity<>("Couldn't save session id", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(userToLog, HttpStatus.OK);
     }

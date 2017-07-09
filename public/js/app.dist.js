@@ -56306,7 +56306,7 @@ LogBoxComponent.propTypes = {
             login: _propTypes2.default.string.isRequired,
             email: _propTypes2.default.string.isRequired,
             password: _propTypes2.default.string.isRequired,
-            sessionId: _propTypes2.default.string.isRequired
+            sessionID: _propTypes2.default.string.isRequired
         }).isRequired,
         error: _propTypes2.default.string.isRequired,
         loading: _propTypes2.default.bool.isRequired
@@ -56824,6 +56824,11 @@ var UserListComponent = function (_React$PureComponent) {
                                 "th",
                                 null,
                                 "Email"
+                            ),
+                            _react2.default.createElement(
+                                "th",
+                                null,
+                                "Session id"
                             )
                         )
                     ),
@@ -56864,6 +56869,11 @@ var UserListComponent = function (_React$PureComponent) {
                         "td",
                         null,
                         u.email
+                    ),
+                    _react2.default.createElement(
+                        "td",
+                        null,
+                        u.sessionID
                     )
                 );
             });
@@ -56935,7 +56945,7 @@ var initialState = {
                 login: "",
                 email: "",
                 password: "",
-                sessionId: ""
+                sessionID: ""
             },
             error: "",
             loading: false

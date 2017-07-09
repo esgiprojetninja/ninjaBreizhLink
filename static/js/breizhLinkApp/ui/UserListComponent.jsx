@@ -23,6 +23,7 @@ export default class UserListComponent extends React.PureComponent {
                             <th>Id</th>
                             <th>Login</th>
                             <th>Email</th>
+                            <th>Session id</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,6 +46,7 @@ export default class UserListComponent extends React.PureComponent {
                 <td>{u.id}</td>
                 <td>{u.login}</td>
                 <td>{u.email}</td>
+                <td>{u.sessionID}</td>
             </tr>
         ));
     }

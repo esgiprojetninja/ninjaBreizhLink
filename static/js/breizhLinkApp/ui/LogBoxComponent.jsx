@@ -149,7 +149,7 @@ LogBoxComponent.propTypes = {
             login: T.string.isRequired,
             email: T.string.isRequired,
             password: T.string.isRequired,
-            sessionId: T.string.isRequired
+            sessionID: T.string.isRequired
         }).isRequired,
         error: T.string.isRequired,
         loading: T.bool.isRequired

@@ -51,9 +51,19 @@ const user = (state = {}, action) => {
         case types.LOGIN_SUCCESS:
             return {
                 ...state,
-                currentUSer: {
-                    ...state.currentUSer,
+                currentUser: {
+                    ...state.currentUser,
                     loading: action.loading,
+                    error: "",
+                    user: action.user
+                }
+            };
+        case types.RECEIVE_ME:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    loading: false,
                     error: "",
                     user: action.user
                 }

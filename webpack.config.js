@@ -5,7 +5,7 @@ module.exports = {
         app: "./static/js/index.js"
     },
     output: {
-        path: path.resolve(__dirname, "public/js"),
+        path: path.resolve(__dirname, "src/main/resources/public/js/"),
         filename: "[name].dist.js"
     },
     module: {

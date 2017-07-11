@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -55,7 +57,7 @@ public class UserController {
 
     @PostMapping(path="/login")
     public @ResponseBody
-    ResponseEntity login(@ModelAttribute User user) {
+    ResponseEntity login(@ModelAttribute User user, HttpServletResponse res) {
         System.out.println("== in login ==");
         User userToLog = userRepository.findByEmail(user.getEmail());
         passwordEncoder = new BCryptPasswordEncoder();
@@ -69,6 +71,9 @@ public class UserController {
         if (savedUser == null) {
             return new ResponseEntity<>("Couldn't save session id", HttpStatus.UNAUTHORIZED);
         }
+        Cookie cookie = new Cookie("user_id", Integer.toString(savedUser.getId()));
+        res.addCookie(cookie);
+        System.out.println(cookie.getValue());
         return new ResponseEntity<>(userToLog, HttpStatus.OK);
     }
 }

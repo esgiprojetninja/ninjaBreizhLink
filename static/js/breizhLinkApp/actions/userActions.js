@@ -6,7 +6,8 @@ import {
     LOGIN_ERROR,
     RECEIVE_ALL_USERS,
     RECEIVE_ERROR,
-    CHANGE_CURRENT_USER
+    CHANGE_CURRENT_USER,
+    RECEIVE_ME
 } from "./userActionTypes";
 import userAPI from "../API/userAPI";
 
@@ -97,6 +98,35 @@ export function login(user) {
         return userAPI.login(user).then(
             data => dispatch(loginSuccess(data)),
             reason => dispatch(loginError(reason))
+        );
+    };
+}
+
+
+const receiveMe = (user) => {
+    return {
+        type: RECEIVE_ME,
+        loading: false,
+        user
+    };
+};
+
+export function getMe() {
+    return function (dispatch) {
+        dispatch(requestLogin());
+        return userAPI.getMe().then(
+            data => dispatch(receiveMe(data)),
+            reason => dispatch(receiveError(reason))
+        );
+    };
+}
+
+export function logout() {
+    return function (dispatch) {
+        dispatch(requestLogin());
+        return userAPI.logout().then(
+            data => dispatch(receiveMe(data)),
+            reason => dispatch(receiveError(reason))
         );
     };
 }

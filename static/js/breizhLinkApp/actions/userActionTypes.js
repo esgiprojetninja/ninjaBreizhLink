@@ -6,3 +6,5 @@ export const CHANGE_NEW_USER = "CHANGE_NEW_USER";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const CHANGE_CURRENT_USER = "CHANGE_CURRENT_USER";
+export const REQUEST_ME = "REQUEST_ME";
+export const RECEIVE_ME = "RECEIVE_ME";

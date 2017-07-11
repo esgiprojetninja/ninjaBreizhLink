@@ -1,12 +1,14 @@
 import $ from "jquery";
 import {wrapRequest} from "./apiUtils";
 
-let _fetchAll, _addUser, _login;
+let _fetchAll, _addUser, _login, _logout, _getMe;
+
+const baseUrl = "http://localhost:8080/";
 
 const userAPI = {
     fetchAll() {
         _fetchAll = $.ajax({
-            url: "http://localhost:8080/user/all/"
+            url: baseUrl + "user/all/"
         });
         return wrapRequest(
             _fetchAll,
@@ -17,7 +19,7 @@ const userAPI = {
     addUser(user) {
         _addUser = $.ajax({
             method: "POST",
-            url: "http://localhost:8080/user/add/",
+            url: baseUrl + "user/add/",
             data: user
         });
         return wrapRequest(
@@ -29,11 +31,33 @@ const userAPI = {
     login(user) {
         _login = $.ajax({
             method: "POST",
-            url: "http://localhost:8080/user/login/",
+            url: baseUrl + "user/login/",
             data: user
         });
         return wrapRequest(
             _login,
+            data => data,
+            error => error
+        );
+    },
+    logout() {
+        _logout = $.ajax({
+            method: "GET",
+            url: baseUrl + "user/logout"
+        });
+        return wrapRequest(
+            _logout,
+            data => data,
+            error => error
+        );
+    },
+    getMe() {
+        _getMe = $.ajax({
+            method: "GET",
+            url: baseUrl + "user/me"
+        });
+        return wrapRequest(
+            _getMe,
             data => data,
             error => error
         );

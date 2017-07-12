@@ -21,9 +21,16 @@ const urlAPI = {
             method: "POST",
             url: baseUrl + "add/",
             data: {
-                longUrl: url.value,
-                password: url.password.length > 0 ? url.password : null,
-                usePwd: url.usePwd
+                url: {
+                    ...url,
+                    longUrl: url.value,
+                    password: url.password.length > 0 ? url.password : null,
+                    usePwd: url.usePwd,
+                    fromDate: url.fromDate.format(),
+                    toDate: url.toDate.format()
+                },
+                fd: url.fromDate.format("YYYY-MM-DDTHH:mm"),
+                td: url.toDate.format("YYYY-MM-DDTHH:mm")
             }
         });
         return wrapRequest(

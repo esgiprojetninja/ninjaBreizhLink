@@ -9,7 +9,8 @@ import UrlFormComponent from "../ui/UrlFormComponent.jsx";
 
 const mapStateToProps = (state) => {
     return {
-        newUrl: state.url.newUrl
+        newUrl: state.url.newUrl,
+        lastShortUrl: state.url.lastShortUrl
     };
 };
 

@@ -3,7 +3,8 @@ import {
     RECEIVE_ALL_URLS,
     RECEIVE_ERROR,
     CHANGE_NEW_URL_VALUE,
-    REQUEST_CREATE_URL
+    REQUEST_CREATE_URL,
+    RECEIVE_LAST_SHORT_URL
 } from "./urlActionTypes";
 import urlAPI from "../API/urlAPI";
 
@@ -38,6 +39,14 @@ const receiveError = (error) => {
     };
 };
 
+const receiveLastShortUrl = (lastShortUrl) => {
+    return {
+        type: RECEIVE_LAST_SHORT_URL,
+        loading: false,
+        lastShortUrl
+    };
+};
+
 export function fetchAllUrls(users) {
     return function (dispatch) {
         dispatch(requestAllUrls());
@@ -52,7 +61,7 @@ export const createUrl = (url) => {
     return function (dispatch) {
         dispatch(requestCreateUrl());
         return urlAPI.addUrl(url).then(
-            () => dispatch(fetchAllUrls()),
+            (shortUrl) => dispatch(receiveLastShortUrl(shortUrl)),
             (reason) => dispatch(receiveError(reason))
         );
     };

@@ -2,8 +2,13 @@ package ninja.breizhlink.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Url {
@@ -17,6 +22,11 @@ public class Url {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    private Boolean useDate = false;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime fromTime;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime toTime;
 
     public Url() {
     }
@@ -67,5 +77,44 @@ public class Url {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public DateTime getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(DateTime fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public DateTime getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(DateTime toTime) {
+        this.toTime = toTime;
+    }
+
+    public Boolean getUseDate() {
+        return useDate;
+    }
+
+    public void setUseDate(Boolean useDate) {
+        this.useDate = useDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Url{" +
+                "id=" + id +
+                ", longUrl='" + longUrl + '\'' +
+                ", shortUrl='" + shortUrl + '\'' +
+                ", password='" + password + '\'' +
+                ", usePwd=" + usePwd +
+                ", user=" + user +
+                ", useDate=" + useDate +
+                ", fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                '}';
     }
 }

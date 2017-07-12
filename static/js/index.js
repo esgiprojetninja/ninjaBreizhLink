@@ -4,6 +4,8 @@ import {Provider} from "react-redux";
 import thunkMiddleware from "redux-thunk";
 import {createLogger} from "redux-logger";
 import {createStore, applyMiddleware} from "redux";
+import moment from "moment/src/moment";
+import "moment/locale/fr";
 import app from "./breizhLinkApp/reducers/app";
 import BreizhLinkApp from "./breizhLinkApp/container/BreizhLinkApp";
 
@@ -32,14 +34,18 @@ const initialState = {
             loading: false
         }
     },
-    view: "profile",
+    view: "url",
     url: {
         urls: [],
         newUrl: {
             value: "",
             password: "",
-            usePwd: false
-        }
+            usePwd: false,
+            useDate: false,
+            fromDate: moment(),
+            toDate: moment()
+        },
+        lastShortUrl: ""
     }
 };
 

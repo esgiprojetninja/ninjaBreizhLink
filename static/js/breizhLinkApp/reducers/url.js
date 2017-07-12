@@ -28,6 +28,12 @@ const url = (state = {}, action) => {
                 ...state,
                 loading: action.loading
             };
+        case types.RECEIVE_LAST_SHORT_URL:
+            return {
+                ...state,
+                loading: action.loading,
+                lastShortUrl: action.lastShortUrl
+            };
         default:
             return state;
     }

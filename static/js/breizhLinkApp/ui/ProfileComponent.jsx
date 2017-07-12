@@ -47,6 +47,8 @@ export default class ProfileComponent extends React.PureComponent {
                                     <th>Long url</th>
                                     <th>Short Url</th>
                                     <th>Password</th>
+                                    <th>From date</th>
+                                    <th>To date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,6 +75,8 @@ export default class ProfileComponent extends React.PureComponent {
                     <a href={"http://b.li:8080/url/" + u.shortUrl} target="blank">{u.shortUrl}</a>
                 </td>
                 <td>{u.password ? "Yes" : "No"}</td>
+                <td>{u.useDate ? u.fromDate : "ND"}</td>
+                <td>{u.useDate ? u.toDate: "ND"}</td>
             </tr>
         ));
     }

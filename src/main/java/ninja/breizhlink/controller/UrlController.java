@@ -5,6 +5,8 @@ import ninja.breizhlink.model.User;
 import ninja.breizhlink.model.repository.UrlRepository;
 import ninja.breizhlink.model.repository.UserRepository;
 import ninja.breizhlink.utils.SessionIdentifierManager;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +34,18 @@ public class UrlController {
 
     @PostMapping(path="/add")
     public @ResponseBody
-    ResponseEntity addNewUrl(@ModelAttribute Url url, @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie) throws Exception {
+    ResponseEntity addNewUrl(
+            @ModelAttribute Url url,
+            @RequestParam String td,
+            @RequestParam String fd,
+            @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie
+    ) throws Exception {
         User user = userRepository.findBySessionID(sessionIDCookie);
         if (user != null) {
             url.setUser(user);
         }
+        url.setFromTime(new DateTime(fd));
+        url.setToTime(new DateTime(td));
         Url savedUrl = urlRepository.save(url);
         if (url.getUsePwd()) {
             passwordEncoder = new BCryptPasswordEncoder();
@@ -46,7 +55,7 @@ public class UrlController {
         Url urlToReturn = urlRepository.save(savedUrl);
         if (urlToReturn != null) {
             return new ResponseEntity<>(
-                    urlToReturn,
+                    urlToReturn.getShortUrl(),
                     sessionIdentifierManager.getHeaderWithSessionIDCookie(sessionIDCookie),
                     HttpStatus.OK
             );

@@ -14,6 +14,7 @@ const user = (state = {}, action) => {
                 loading: action.loading
             };
         case types.RECEIVE_ERROR:
+            console.warn(action.error);
             return {
                 ...state,
                 loading: action.loading
@@ -66,6 +67,22 @@ const user = (state = {}, action) => {
                     loading: false,
                     error: "",
                     user: action.user
+                }
+            };
+        case types.REQUEST_URLS:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    loading: action.loading
+                }
+            };
+        case types.RECEIVE_URLS:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    urls: action.urls
                 }
             };
         default:

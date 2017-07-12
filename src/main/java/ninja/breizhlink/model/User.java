@@ -20,7 +20,7 @@ public class User {
     @Transient
     private String passwordConfirm = "";
     private String sessionID = "";
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Url> urls = new ArrayList<Url>();
 
     public User() {

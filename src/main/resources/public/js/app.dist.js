@@ -11083,12 +11083,17 @@ exports.addNewUser = addNewUser;
 exports.login = login;
 exports.getMe = getMe;
 exports.logout = logout;
+exports.getMyUrls = getMyUrls;
 
 var _userActionTypes = __webpack_require__(222);
 
 var _userAPI = __webpack_require__(490);
 
 var _userAPI2 = _interopRequireDefault(_userAPI);
+
+var _urlAPI = __webpack_require__(489);
+
+var _urlAPI2 = _interopRequireDefault(_urlAPI);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11209,6 +11214,32 @@ function logout() {
         dispatch(requestLogin());
         return _userAPI2.default.logout().then(function (data) {
             return dispatch(receiveMe(data));
+        }, function (reason) {
+            return dispatch(receiveError(reason));
+        });
+    };
+}
+
+var requestUrls = function requestUrls() {
+    return {
+        type: _userActionTypes.REQUEST_URLS,
+        loading: true
+    };
+};
+
+var receiveUrls = function receiveUrls(urls) {
+    return {
+        type: _userActionTypes.RECEIVE_URLS,
+        loading: false,
+        urls: urls
+    };
+};
+
+function getMyUrls() {
+    return function (dispatch) {
+        dispatch(requestUrls());
+        return _urlAPI2.default.myUrls().then(function (data) {
+            return dispatch(receiveUrls(data));
         }, function (reason) {
             return dispatch(receiveError(reason));
         });
@@ -29959,6 +29990,8 @@ var LOGIN_ERROR = exports.LOGIN_ERROR = "LOGIN_ERROR";
 var CHANGE_CURRENT_USER = exports.CHANGE_CURRENT_USER = "CHANGE_CURRENT_USER";
 var REQUEST_ME = exports.REQUEST_ME = "REQUEST_ME";
 var RECEIVE_ME = exports.RECEIVE_ME = "RECEIVE_ME";
+var REQUEST_URLS = exports.REQUEST_URLS = "REQUEST_URLS";
+var RECEIVE_URLS = exports.RECEIVE_URLS = "RECEIVE_URLS";
 
 /***/ }),
 /* 223 */
@@ -55528,12 +55561,15 @@ var _apiUtils = __webpack_require__(219);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _fetchAll = void 0,
-    _addUrl = void 0;
+    _addUrl = void 0,
+    _myUrls = void 0;
+
+var baseUrl = "http://localhost:8080/url/";
 
 var urlAPI = {
     fetchAll: function fetchAll() {
         _fetchAll = _jquery2.default.ajax({
-            url: "http://localhost:8080/url/all/"
+            url: baseUrl + "all/"
         });
         return (0, _apiUtils.wrapRequest)(_fetchAll, function (data) {
             return data;
@@ -55544,7 +55580,7 @@ var urlAPI = {
     addUrl: function addUrl(url) {
         _addUrl = _jquery2.default.ajax({
             method: "POST",
-            url: "http://localhost:8080/url/add",
+            url: baseUrl + "add/",
             data: {
                 longUrl: url.value,
                 password: url.password.length > 0 ? url.password : null,
@@ -55552,6 +55588,17 @@ var urlAPI = {
             }
         });
         return (0, _apiUtils.wrapRequest)(_addUrl, function (data) {
+            return data;
+        }, function (error) {
+            return error;
+        });
+    },
+    myUrls: function myUrls() {
+        _myUrls = _jquery2.default.ajax({
+            method: "GET",
+            url: baseUrl + "my-urls"
+        });
+        return (0, _apiUtils.wrapRequest)(_myUrls, function (data) {
             return data;
         }, function (error) {
             return error;
@@ -55900,6 +55947,7 @@ var user = function user() {
                 loading: action.loading
             });
         case types.RECEIVE_ERROR:
+            console.warn(action.error);
             return _extends({}, state, {
                 loading: action.loading
             });
@@ -55940,6 +55988,18 @@ var user = function user() {
                     loading: false,
                     error: "",
                     user: action.user
+                })
+            });
+        case types.REQUEST_URLS:
+            return _extends({}, state, {
+                currentUser: _extends({}, state.currentUser, {
+                    loading: action.loading
+                })
+            });
+        case types.RECEIVE_URLS:
+            return _extends({}, state, {
+                currentUser: _extends({}, state.currentUser, {
+                    urls: action.urls
                 })
             });
         default:
@@ -56010,6 +56070,10 @@ var _UserComponent2 = _interopRequireDefault(_UserComponent);
 var _UrlComponent = __webpack_require__(500);
 
 var _UrlComponent2 = _interopRequireDefault(_UrlComponent);
+
+var _Profile = __webpack_require__(506);
+
+var _Profile2 = _interopRequireDefault(_Profile);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56115,6 +56179,8 @@ var BreizhLinkAppComponent = function (_React$PureComponent) {
                     return _react2.default.createElement(_UrlComponent2.default, null);
                 case "user":
                     return _react2.default.createElement(_UserComponent2.default, { logbox: this.props.user.id === 0 });
+                case "profile":
+                    return _react2.default.createElement(_Profile2.default, null);
                 default:
                     return _react2.default.createElement(
                         "h1",
@@ -56132,7 +56198,10 @@ var BreizhLinkAppComponent = function (_React$PureComponent) {
                     { pullRight: true },
                     _react2.default.createElement(
                         _reactBootstrap.NavItem,
-                        { eventKey: 1 },
+                        {
+                            eventKey: 1,
+                            onClick: this.handleSwitchView.bind(this, "profile")
+                        },
                         this.props.user.login
                     ),
                     _react2.default.createElement(
@@ -57059,13 +57128,14 @@ var initialState = {
                 login: "",
                 email: "",
                 password: "",
-                id: 0
+                id: 0,
+                urls: []
             },
             error: "",
             loading: false
         }
     },
-    view: "user",
+    view: "profile",
     url: {
         urls: [],
         newUrl: {
@@ -57083,6 +57153,265 @@ _reactDom2.default.render(_react2.default.createElement(
     { store: store },
     _react2.default.createElement(_BreizhLinkApp2.default, null)
 ), document.getElementById("app"));
+
+/***/ }),
+/* 506 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _reactRedux = __webpack_require__(40);
+
+var _ProfileComponent = __webpack_require__(507);
+
+var _ProfileComponent2 = _interopRequireDefault(_ProfileComponent);
+
+var _userActions = __webpack_require__(131);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        user: state.user.currentUser.user
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchMyUrls: function fetchMyUrls() {
+            dispatch((0, _userActions.getMyUrls)());
+        }
+    };
+};
+
+var Profile = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_ProfileComponent2.default);
+
+exports.default = Profile;
+
+/***/ }),
+/* 507 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(8);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactBootstrap = __webpack_require__(48);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ProfileComponent = function (_React$PureComponent) {
+    _inherits(ProfileComponent, _React$PureComponent);
+
+    function ProfileComponent() {
+        _classCallCheck(this, ProfileComponent);
+
+        return _possibleConstructorReturn(this, (ProfileComponent.__proto__ || Object.getPrototypeOf(ProfileComponent)).apply(this, arguments));
+    }
+
+    _createClass(ProfileComponent, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.props.fetchMyUrls();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _props$user = this.props.user,
+                login = _props$user.login,
+                email = _props$user.email,
+                id = _props$user.id;
+
+            return _react2.default.createElement(
+                _reactBootstrap.Row,
+                null,
+                _react2.default.createElement(
+                    _reactBootstrap.Col,
+                    { sm: 4, smOffset: 2 },
+                    _react2.default.createElement(
+                        _reactBootstrap.Panel,
+                        { header: "My informations" },
+                        _react2.default.createElement(
+                            _reactBootstrap.Table,
+                            null,
+                            _react2.default.createElement(
+                                "tbody",
+                                null,
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        "Id"
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        id
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        "Login"
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        login
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        "Email"
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        email
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Col,
+                    { sm: 8, smOffset: 2 },
+                    _react2.default.createElement(
+                        _reactBootstrap.Panel,
+                        { header: "My urls" },
+                        _react2.default.createElement(
+                            _reactBootstrap.Table,
+                            { responsive: true },
+                            _react2.default.createElement(
+                                "thead",
+                                null,
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        "Id"
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        "Long url"
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        "Short Url"
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        "Password"
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                "tbody",
+                                null,
+                                this.renderUrls()
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            {
+                                onClick: this.props.fetchMyUrls
+                            },
+                            "Refresh list"
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: "renderUrls",
+        value: function renderUrls() {
+            return this.props.user.urls.map(function (u) {
+                return _react2.default.createElement(
+                    "tr",
+                    { key: u.id },
+                    _react2.default.createElement(
+                        "td",
+                        null,
+                        u.id
+                    ),
+                    _react2.default.createElement(
+                        "td",
+                        null,
+                        u.longUrl
+                    ),
+                    _react2.default.createElement(
+                        "td",
+                        null,
+                        _react2.default.createElement(
+                            "a",
+                            { href: "http://b.li:8080/url/" + u.shortUrl, target: "blank" },
+                            u.shortUrl
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "td",
+                        null,
+                        u.password ? "Yes" : "No"
+                    )
+                );
+            });
+        }
+    }]);
+
+    return ProfileComponent;
+}(_react2.default.PureComponent);
+
+exports.default = ProfileComponent;
+
+
+ProfileComponent.propTypes = {
+    user: _propTypes2.default.shape({
+        login: _propTypes2.default.string.isRequired,
+        email: _propTypes2.default.string.isRequired,
+        id: _propTypes2.default.number.isRequired,
+        urls: _propTypes2.default.array.isRequired
+    }).isRequired,
+    fetchMyUrls: _propTypes2.default.func.isRequired
+};
 
 /***/ })
 /******/ ]);

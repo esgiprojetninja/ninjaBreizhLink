@@ -7,9 +7,12 @@ import {
     RECEIVE_ALL_USERS,
     RECEIVE_ERROR,
     CHANGE_CURRENT_USER,
-    RECEIVE_ME
+    RECEIVE_ME,
+    REQUEST_URLS,
+    RECEIVE_URLS
 } from "./userActionTypes";
 import userAPI from "../API/userAPI";
+import urlAPI from "../API/urlAPI";
 
 
 const requestAllUsers = () => {
@@ -126,6 +129,31 @@ export function logout() {
         dispatch(requestLogin());
         return userAPI.logout().then(
             data => dispatch(receiveMe(data)),
+            reason => dispatch(receiveError(reason))
+        );
+    };
+}
+
+const requestUrls = () => {
+    return {
+        type: REQUEST_URLS,
+        loading: true
+    };
+};
+
+const receiveUrls = (urls) => {
+    return {
+        type: RECEIVE_URLS,
+        loading: false,
+        urls
+    };
+};
+
+export function getMyUrls() {
+    return function (dispatch) {
+        dispatch(requestUrls());
+        return urlAPI.myUrls().then(
+            data => dispatch(receiveUrls(data)),
             reason => dispatch(receiveError(reason))
         );
     };

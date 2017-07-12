@@ -1,6 +1,8 @@
 package ninja.breizhlink.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +14,8 @@ public class Url {
     private String shortUrl = "0";
     private String password = "0";
     private Boolean usePwd = false;
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Url() {

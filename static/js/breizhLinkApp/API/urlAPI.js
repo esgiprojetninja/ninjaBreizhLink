@@ -1,12 +1,14 @@
 import $ from "jquery";
 import {wrapRequest} from "./apiUtils";
 
-let _fetchAll, _addUrl;
+let _fetchAll, _addUrl, _myUrls;
+
+const baseUrl = "http://localhost:8080/url/";
 
 const urlAPI = {
     fetchAll() {
         _fetchAll = $.ajax({
-            url: "http://localhost:8080/url/all/"
+            url: baseUrl + "all/"
         });
         return wrapRequest(
             _fetchAll,
@@ -17,7 +19,7 @@ const urlAPI = {
     addUrl(url) {
         _addUrl = $.ajax({
             method: "POST",
-            url: "http://localhost:8080/url/add",
+            url: baseUrl + "add/",
             data: {
                 longUrl: url.value,
                 password: url.password.length > 0 ? url.password : null,
@@ -26,6 +28,17 @@ const urlAPI = {
         });
         return wrapRequest(
             _addUrl,
+            data => data,
+            error => error
+        );
+    },
+    myUrls() {
+        _myUrls = $.ajax({
+            method: "GET",
+            url: baseUrl + "my-urls"
+        });
+        return wrapRequest(
+            _myUrls,
             data => data,
             error => error
         );

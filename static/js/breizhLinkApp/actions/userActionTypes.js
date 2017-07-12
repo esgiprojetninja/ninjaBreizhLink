@@ -8,3 +8,5 @@ export const LOGIN_ERROR = "LOGIN_ERROR";
 export const CHANGE_CURRENT_USER = "CHANGE_CURRENT_USER";
 export const REQUEST_ME = "REQUEST_ME";
 export const RECEIVE_ME = "RECEIVE_ME";
+export const REQUEST_URLS = "REQUEST_URLS";
+export const RECEIVE_URLS = "RECEIVE_URLS";

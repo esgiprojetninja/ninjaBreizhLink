@@ -33,6 +33,10 @@ public class UrlController {
     @PostMapping(path="/add")
     public @ResponseBody
     ResponseEntity addNewUrl(@ModelAttribute Url url, @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie) throws Exception {
+        User user = userRepository.findBySessionID(sessionIDCookie);
+        if (user != null) {
+            url.setUser(user);
+        }
         Url savedUrl = urlRepository.save(url);
         if (url.getUsePwd()) {
             passwordEncoder = new BCryptPasswordEncoder();

@@ -51,7 +51,7 @@ public class UserController {
 
     @GetMapping(path="/all")
     public @ResponseBody ResponseEntity<Iterable<User>> getAllUsers(@CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie) throws Exception {
-        return new ResponseEntity<Iterable<User>>(
+        return new ResponseEntity<>(
                 userRepository.findAll(),
                 sessionIdentifierManager.getHeaderWithSessionIDCookie(sessionIDCookie),
                 HttpStatus.OK

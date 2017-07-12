@@ -25,13 +25,14 @@ const initialState = {
                 login: "",
                 email: "",
                 password: "",
-                id: 0
+                id: 0,
+                urls: []
             },
             error: "",
             loading: false
         }
     },
-    view: "user",
+    view: "profile",
     url: {
         urls: [],
         newUrl: {

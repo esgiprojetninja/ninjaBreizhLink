@@ -11,6 +11,8 @@ import {
 import UserComponent from "./UserComponent.jsx";
 import UrlComponent from "./UrlComponent.jsx";
 
+import Profile from "../container/Profile";
+
 export default class BreizhLinkAppComponent extends React.PureComponent {
 
     componentDidMount() {
@@ -61,6 +63,8 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
                 return <UrlComponent />;
             case "user":
                 return <UserComponent logbox={this.props.user.id === 0} />;
+            case "profile":
+                return <Profile />;
             default:
                 return <h1>OOPS !</h1>;
         }
@@ -70,7 +74,12 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
         if(this.props.user.id !== 0) {
             return (
                 <Nav pullRight>
-                    <NavItem eventKey={1}>{this.props.user.login}</NavItem>
+                    <NavItem
+                        eventKey={1}
+                        onClick={this.handleSwitchView.bind(this, "profile")}
+                    >
+                        {this.props.user.login}
+                    </NavItem>
                     <NavItem eventKey={1} onClick={this.props.logout}>Logout</NavItem>
                 </Nav>
             );

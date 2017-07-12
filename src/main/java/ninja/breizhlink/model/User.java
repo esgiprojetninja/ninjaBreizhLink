@@ -1,10 +1,12 @@
 package ninja.breizhlink.model;
 
-import ninja.breizhlink.utils.SessionIdentifierManager;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class User {
@@ -18,6 +20,8 @@ public class User {
     @Transient
     private String passwordConfirm = "";
     private String sessionID = "";
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Url> urls = new ArrayList<Url>();
 
     public User() {
     }
@@ -75,6 +79,14 @@ public class User {
         this.sessionID = new BigInteger(130, random).toString(32);
     }
 
+    public List<Url> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<Url> urls) {
+        this.urls = urls;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -84,4 +96,6 @@ public class User {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+
 }

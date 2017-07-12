@@ -14,7 +14,6 @@ export default class UserComponent extends React.PureComponent {
     }
 
     renderLogBox() {
-        console.log(this.props.logbox);
         return this.props.logbox ? <LogBox /> : null;
     }
 }

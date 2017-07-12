@@ -56839,7 +56839,6 @@ var UserComponent = function (_React$PureComponent) {
     }, {
         key: "renderLogBox",
         value: function renderLogBox() {
-            console.log(this.props.logbox);
             return this.props.logbox ? _react2.default.createElement(_LogBox2.default, null) : null;
         }
     }]);

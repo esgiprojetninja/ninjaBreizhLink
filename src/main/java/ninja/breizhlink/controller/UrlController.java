@@ -1,7 +1,9 @@
 package ninja.breizhlink.controller;
 
 import ninja.breizhlink.model.Url;
+import ninja.breizhlink.model.User;
 import ninja.breizhlink.model.repository.UrlRepository;
+import ninja.breizhlink.model.repository.UserRepository;
 import ninja.breizhlink.utils.SessionIdentifierManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import java.util.Random;
 public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
+    @Autowired
+    private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private SessionIdentifierManager sessionIdentifierManager;
@@ -84,6 +88,24 @@ public class UrlController {
             return "redirect:" + url.getLongUrl();
         }
         return "redirect:/url/pwd/" + url.getId();
+    }
+
+    @GetMapping("/my-urls")
+    public @ResponseBody
+    ResponseEntity getMyUrls(@CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie) throws Exception {
+        User user = userRepository.findBySessionID(sessionIDCookie);
+        if (user == null) {
+            return new ResponseEntity<>(
+                    "You are not logged in !",
+                    sessionIdentifierManager.getHeaderWithSessionIDCookie("0"),
+                    HttpStatus.FORBIDDEN
+            );
+        }
+        return new ResponseEntity<>(
+                user.getUrls(),
+                sessionIdentifierManager.getHeaderWithSessionIDCookie(user.getSessionID()),
+                HttpStatus.OK
+        );
     }
 
      private String createShortUrl(Long id) {

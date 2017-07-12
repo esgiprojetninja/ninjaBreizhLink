@@ -1,10 +1,7 @@
 package ninja.breizhlink.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Url {
@@ -15,6 +12,8 @@ public class Url {
     private String shortUrl = "0";
     private String password = "0";
     private Boolean usePwd = false;
+    @ManyToOne
+    private User user;
 
     public Url() {
     }
@@ -57,5 +56,13 @@ public class Url {
 
     public void setUsePwd(Boolean usePwd) {
         this.usePwd = usePwd;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

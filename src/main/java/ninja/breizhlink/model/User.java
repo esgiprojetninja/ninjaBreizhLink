@@ -1,8 +1,10 @@
 package ninja.breizhlink.model;
 
-import ninja.breizhlink.utils.SessionIdentifierGenerator;
+import ninja.breizhlink.utils.SessionIdentifierManager;
 
 import javax.persistence.*;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 @Entity
 public class User {
@@ -69,8 +71,8 @@ public class User {
     }
 
     public void renewSessionID() {
-        SessionIdentifierGenerator sessionIDGenerator = new SessionIdentifierGenerator();
-        this.sessionID = sessionIDGenerator.nextSessionId();
+        SecureRandom random = new SecureRandom();
+        this.sessionID = new BigInteger(130, random).toString(32);
     }
 
     @Override

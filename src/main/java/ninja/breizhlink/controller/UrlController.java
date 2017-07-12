@@ -2,7 +2,10 @@ package ninja.breizhlink.controller;
 
 import ninja.breizhlink.model.Url;
 import ninja.breizhlink.model.repository.UrlRepository;
+import ninja.breizhlink.utils.SessionIdentifierManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,26 +23,42 @@ public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
     private BCryptPasswordEncoder passwordEncoder;
-
-    public static HttpSession session() {
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return attr.getRequest().getSession(true);
-    }
+    @Autowired
+    private SessionIdentifierManager sessionIdentifierManager;
 
     @PostMapping(path="/add")
-    public @ResponseBody String addNewUrl(@ModelAttribute Url url) {
+    public @ResponseBody
+    ResponseEntity addNewUrl(@ModelAttribute Url url, @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie) throws Exception {
         Url savedUrl = urlRepository.save(url);
         if (url.getUsePwd()) {
             passwordEncoder = new BCryptPasswordEncoder();
             savedUrl.setPassword(passwordEncoder.encode(url.getPassword()));
         }
         savedUrl.setShortUrl(this.createShortUrl(savedUrl.getId()));
-        return urlRepository.save(savedUrl).toString();
+        Url urlToReturn = urlRepository.save(savedUrl);
+        if (urlToReturn != null) {
+            return new ResponseEntity<>(
+                    urlToReturn,
+                    sessionIdentifierManager.getHeaderWithSessionIDCookie(sessionIDCookie),
+                    HttpStatus.OK
+            );
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(path="/all")
-    public @ResponseBody Iterable<Url> getAllUrl() {
-        return urlRepository.findAll();
+    public @ResponseBody ResponseEntity<Iterable<Url>> getAllUrl(@CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie) throws Exception {
+        try {
+            Iterable<Url> urls = urlRepository.findAll();
+            return new ResponseEntity<>(
+                    urls,
+                    sessionIdentifierManager.getHeaderWithSessionIDCookie(sessionIDCookie),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     @RequestMapping("/{shortUrl}")

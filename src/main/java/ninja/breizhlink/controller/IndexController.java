@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
     @GetMapping(path = "/")
     public String index(@CookieValue(value = "user_id", defaultValue = "0") String userId) {
-        System.out.println("== Cookie value ==");
-        System.out.println(userId);
         return "index";
     }
 }

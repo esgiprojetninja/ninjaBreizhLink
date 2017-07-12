@@ -22,7 +22,6 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div>
                 <Navbar inverse collapseOnSelect>
@@ -61,14 +60,14 @@ export default class BreizhLinkAppComponent extends React.PureComponent {
             case "url":
                 return <UrlComponent />;
             case "user":
-                return <UserComponent />;
+                return <UserComponent logbox={this.props.user.id === 0} />;
             default:
                 return <h1>OOPS !</h1>;
         }
     }
 
     renderUserNavbarPart() {
-        if(this.props.user.sessionID !== "") {
+        if(this.props.user.id !== 0) {
             return (
                 <Nav pullRight>
                     <NavItem eventKey={1}>{this.props.user.login}</NavItem>
@@ -93,7 +92,7 @@ BreizhLinkAppComponent.propTypes = {
     user: T.shape({
         email: T.string.isRequired,
         login: T.string.isRequired,
-        sessionID: T.isRequired
+        id: T.number.isRequired
     }).isRequired,
     view: T.string.isRequired,
     switchView: T.func.isRequired,

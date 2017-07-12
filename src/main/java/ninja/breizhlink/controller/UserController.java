@@ -60,7 +60,7 @@ public class UserController {
 
     @PostMapping(path="/login")
     public @ResponseBody
-    ResponseEntity login(@ModelAttribute User user) {
+    ResponseEntity login(@ModelAttribute User user) throws Exception {
         User userToLog = userRepository.findByEmail(user.getEmail());
         passwordEncoder = new BCryptPasswordEncoder();
         if (userToLog == null || !passwordEncoder.matches(user.getPassword(), userToLog.getPassword())) {
@@ -71,9 +71,11 @@ public class UserController {
         if (savedUser == null) {
             return new ResponseEntity<>("Couldn't save session id", HttpStatus.UNAUTHORIZED);
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Set-Cookie","session_id=" + savedUser.getSessionID() + ";path=/;HttpOnly");
-        return new ResponseEntity<>(userToLog,headers, HttpStatus.OK);
+        return new ResponseEntity<>(
+                userToLog,
+                sessionIdentifierManager.getHeaderWithSessionIDCookie(userToLog.getSessionID()),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping(path="/me")

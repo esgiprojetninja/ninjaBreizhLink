@@ -56041,7 +56041,6 @@ var BreizhLinkAppComponent = function (_React$PureComponent) {
     }, {
         key: "render",
         value: function render() {
-            console.log(this.props);
             return _react2.default.createElement(
                 "div",
                 null,
@@ -56115,7 +56114,7 @@ var BreizhLinkAppComponent = function (_React$PureComponent) {
                 case "url":
                     return _react2.default.createElement(_UrlComponent2.default, null);
                 case "user":
-                    return _react2.default.createElement(_UserComponent2.default, null);
+                    return _react2.default.createElement(_UserComponent2.default, { logbox: this.props.user.id === 0 });
                 default:
                     return _react2.default.createElement(
                         "h1",
@@ -56127,7 +56126,7 @@ var BreizhLinkAppComponent = function (_React$PureComponent) {
     }, {
         key: "renderUserNavbarPart",
         value: function renderUserNavbarPart() {
-            if (this.props.user.sessionID !== "") {
+            if (this.props.user.id !== 0) {
                 return _react2.default.createElement(
                     _reactBootstrap.Nav,
                     { pullRight: true },
@@ -56168,7 +56167,7 @@ BreizhLinkAppComponent.propTypes = {
     user: _propTypes2.default.shape({
         email: _propTypes2.default.string.isRequired,
         login: _propTypes2.default.string.isRequired,
-        sessionID: _propTypes2.default.isRequired
+        id: _propTypes2.default.number.isRequired
     }).isRequired,
     view: _propTypes2.default.string.isRequired,
     switchView: _propTypes2.default.func.isRequired,
@@ -56407,7 +56406,7 @@ LogBoxComponent.propTypes = {
             login: _propTypes2.default.string.isRequired,
             email: _propTypes2.default.string.isRequired,
             password: _propTypes2.default.string.isRequired,
-            sessionID: _propTypes2.default.string.isRequired
+            id: _propTypes2.default.number.isRequired
         }).isRequired,
         error: _propTypes2.default.string.isRequired,
         loading: _propTypes2.default.bool.isRequired
@@ -56798,6 +56797,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(8);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _UserList = __webpack_require__(494);
 
 var _UserList2 = _interopRequireDefault(_UserList);
@@ -56814,31 +56817,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UserListComponent = function (_React$PureComponent) {
-    _inherits(UserListComponent, _React$PureComponent);
+var UserComponent = function (_React$PureComponent) {
+    _inherits(UserComponent, _React$PureComponent);
 
-    function UserListComponent() {
-        _classCallCheck(this, UserListComponent);
+    function UserComponent() {
+        _classCallCheck(this, UserComponent);
 
-        return _possibleConstructorReturn(this, (UserListComponent.__proto__ || Object.getPrototypeOf(UserListComponent)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (UserComponent.__proto__ || Object.getPrototypeOf(UserComponent)).apply(this, arguments));
     }
 
-    _createClass(UserListComponent, [{
+    _createClass(UserComponent, [{
         key: "render",
         value: function render() {
             return _react2.default.createElement(
                 "div",
                 null,
-                _react2.default.createElement(_LogBox2.default, null),
+                this.renderLogBox(),
                 _react2.default.createElement(_UserList2.default, null)
             );
         }
+    }, {
+        key: "renderLogBox",
+        value: function renderLogBox() {
+            console.log(this.props.logbox);
+            return this.props.logbox ? _react2.default.createElement(_LogBox2.default, null) : null;
+        }
     }]);
 
-    return UserListComponent;
+    return UserComponent;
 }(_react2.default.PureComponent);
 
-exports.default = UserListComponent;
+exports.default = UserComponent;
+
+
+UserComponent.propTypes = {
+    logbox: _propTypes2.default.bool.isRequired
+};
 
 /***/ }),
 /* 504 */
@@ -57046,7 +57060,7 @@ var initialState = {
                 login: "",
                 email: "",
                 password: "",
-                sessionID: ""
+                id: 0
             },
             error: "",
             loading: false

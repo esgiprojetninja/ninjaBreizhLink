@@ -5,13 +5,6 @@ import ninja.breizhlink.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpSession;
-import java.security.SecureRandom;
-import java.math.BigInteger;
 
 @Component
 public class SessionIdentifierManager {

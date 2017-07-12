@@ -11,10 +11,10 @@ public class Url {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-    private String longUrl;
-    private String shortUrl;
-    private String password;
-    private Boolean usePwd;
+    private String longUrl = "0";
+    private String shortUrl = "0";
+    private String password = "0";
+    private Boolean usePwd = false;
 
     public Url() {
     }

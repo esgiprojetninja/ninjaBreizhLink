@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Controller
-@CrossOrigin(origins = "http://breizh.link")
+@CrossOrigin(origins = "http://b.li:8080")
 @RequestMapping(path="url")
 public class UrlController {
     @Autowired

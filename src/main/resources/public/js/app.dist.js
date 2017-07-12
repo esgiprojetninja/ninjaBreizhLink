@@ -55533,7 +55533,7 @@ var _fetchAll = void 0,
 var urlAPI = {
     fetchAll: function fetchAll() {
         _fetchAll = _jquery2.default.ajax({
-            url: "http://b.li:8080/url/all/"
+            url: "http://localhost:8080/url/all/"
         });
         return (0, _apiUtils.wrapRequest)(_fetchAll, function (data) {
             return data;
@@ -55544,7 +55544,7 @@ var urlAPI = {
     addUrl: function addUrl(url) {
         _addUrl = _jquery2.default.ajax({
             method: "POST",
-            url: "http://b.li:8080/url/add",
+            url: "http://localhost:8080/url/add",
             data: {
                 longUrl: url.value,
                 password: url.password.length > 0 ? url.password : null,

@@ -6,7 +6,7 @@ let _fetchAll, _addUrl;
 const urlAPI = {
     fetchAll() {
         _fetchAll = $.ajax({
-            url: "http://b.li:8080/url/all/"
+            url: "http://localhost:8080/url/all/"
         });
         return wrapRequest(
             _fetchAll,
@@ -17,7 +17,7 @@ const urlAPI = {
     addUrl(url) {
         _addUrl = $.ajax({
             method: "POST",
-            url: "http://b.li:8080/url/add",
+            url: "http://localhost:8080/url/add",
             data: {
                 longUrl: url.value,
                 password: url.password.length > 0 ? url.password : null,

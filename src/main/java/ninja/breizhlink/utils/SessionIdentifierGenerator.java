@@ -10,11 +10,6 @@ import java.math.BigInteger;
 public final class SessionIdentifierGenerator {
     private SecureRandom random = new SecureRandom();
 
-    public static HttpSession session() {
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return attr.getRequest().getSession(true);
-    }
-
     public String nextSessionId() {
         return new BigInteger(130, random).toString(32);
     }

@@ -1,19 +1,21 @@
 package ninja.breizhlink.model;
 
+import ninja.breizhlink.utils.SessionIdentifierGenerator;
+
 import javax.persistence.*;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private int id;
+    private int id = 0;
     @Column(unique = true)
-    private String email;
-    private String login;
-    private String password;
+    private String email = "";
+    private String login = "";
+    private String password = "";
     @Transient
-    private String passwordConfirm;
-    private String sessionID;
+    private String passwordConfirm = "";
+    private String sessionID = "";
 
     public User() {
     }
@@ -64,6 +66,11 @@ public class User {
 
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
+    }
+
+    public void renewSessionID() {
+        SessionIdentifierGenerator sessionIDGenerator = new SessionIdentifierGenerator();
+        this.sessionID = sessionIDGenerator.nextSessionId();
     }
 
     @Override

@@ -28,6 +28,8 @@ public class Url {
     private DateTime toDateTime;
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UrlVisit> urlVisits = new ArrayList<UrlVisit>();
+    private Boolean limitVisits = false;
+    private int maxVisits = 0;
 
     public Url() {
     }
@@ -112,6 +114,22 @@ public class Url {
         this.urlVisits = urlVisits;
     }
 
+    public Boolean getLimitVisits() {
+        return limitVisits;
+    }
+
+    public void setLimitVisits(Boolean limitVisits) {
+        this.limitVisits = limitVisits;
+    }
+
+    public int getMaxVisits() {
+        return maxVisits;
+    }
+
+    public void setMaxVisits(int maxVisits) {
+        this.maxVisits = maxVisits;
+    }
+
     @Override
     public String toString() {
         return "Url{" +
@@ -124,6 +142,9 @@ public class Url {
                 ", useDate=" + useDate +
                 ", fromDateTime=" + fromDateTime +
                 ", toDateTime=" + toDateTime +
+                ", urlVisits=" + urlVisits +
+                ", limitVisits=" + limitVisits +
+                ", maxVisits=" + maxVisits +
                 '}';
     }
 }

@@ -14,27 +14,6 @@ import Datetime from "react-datetime";
 
 export default class UrlFormComponent extends React.PureComponent {
 
-    handleValueChange(e) {
-        this.props.newUrlChanged({
-            ...this.props.newUrl,
-            value: e.target.value
-        });
-    }
-
-    handlePasswordChange(e) {
-        this.props.newUrlChanged({
-            ...this.props.newUrl,
-            password: e.target.value
-        });
-    }
-
-    handleUsePwdChange(e) {
-        this.props.newUrlChanged({
-            ...this.props.newUrl,
-            usePwd: e.target.checked
-        });
-    }
-
     handleNewUrlChanged(e) {
         const changedNewUrl = {...this.props.newUrl};
         changedNewUrl[e.target.id] = e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -81,14 +60,14 @@ export default class UrlFormComponent extends React.PureComponent {
                         type="text"
                         placeholder="Url"
                         value={this.props.newUrl.value}
-                        onChange={this.handleValueChange.bind(this)}
+                        onChange={this.handleNewUrlChanged.bind(this)}
                     />
                     <HelpBlock>Please enter a valid url</HelpBlock>
                 </FormGroup>
                 <FormGroup>
                     <Checkbox
                         id="usePwd"
-                        onChange={this.handleUsePwdChange.bind(this)}
+                        onChange={this.handleNewUrlChanged.bind(this)}
                         value={this.props.newUrl.usePwd}
                     >
                         Protect whit a password ?
@@ -105,6 +84,16 @@ export default class UrlFormComponent extends React.PureComponent {
                     </Checkbox>
                 </FormGroup>
                 {this.renderDateRange()}
+                <FormGroup>
+                    <Checkbox
+                        id="limitVisits"
+                        onChange={this.handleNewUrlChanged.bind(this)}
+                        value={this.props.newUrl.limitVisits}
+                    >
+                        Limit number of visits ?
+                    </Checkbox>
+                </FormGroup>
+                {this.renderLimitVisits()}
                 <Button bsStyle="success" type="submit">Shorten</Button>
             </form>
         );
@@ -120,7 +109,7 @@ export default class UrlFormComponent extends React.PureComponent {
                         type="password"
                         placeholder="Password"
                         value={this.props.newUrl.password}
-                        onChange={this.handlePasswordChange.bind(this)}
+                        onChange={this.handleNewUrlChanged.bind(this)}
                     />
                     <HelpBlock>Please enter a valid url</HelpBlock>
                 </FormGroup>
@@ -153,6 +142,19 @@ export default class UrlFormComponent extends React.PureComponent {
                         placeholder="To date"
                     />
                 </div>
+            );
+        }
+    }
+
+    renderLimitVisits() {
+        if (this.props.newUrl.limitVisits) {
+            return (
+                <FormControl
+                    id="maxVisits"
+                    type="number"
+                    value={this.props.newUrl.maxVisits}
+                    onChange={this.handleNewUrlChanged.bind(this)}
+                />
             );
         }
     }

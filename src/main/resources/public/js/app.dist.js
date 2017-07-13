@@ -51944,8 +51944,10 @@ var urlAPI = {
                 longUrl: url.value,
                 usePwd: url.usePwd ? 1 : 0,
                 useDate: url.useDate ? 1 : 0,
+                limitVisits: url.limitVisits ? 1 : 0,
                 fd: fromDateTime,
-                td: toDateTime
+                td: toDateTime,
+                maxVisits: url.maxVisits
             }
         });
         return (0, _apiUtils.wrapRequest)(_addUrl, function (data) {
@@ -80464,10 +80466,6 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactBootstrap = __webpack_require__(70);
 
-var _moment = __webpack_require__(176);
-
-var _moment2 = _interopRequireDefault(_moment);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -80795,27 +80793,6 @@ var UrlFormComponent = function (_React$PureComponent) {
     }
 
     _createClass(UrlFormComponent, [{
-        key: "handleValueChange",
-        value: function handleValueChange(e) {
-            this.props.newUrlChanged(_extends({}, this.props.newUrl, {
-                value: e.target.value
-            }));
-        }
-    }, {
-        key: "handlePasswordChange",
-        value: function handlePasswordChange(e) {
-            this.props.newUrlChanged(_extends({}, this.props.newUrl, {
-                password: e.target.value
-            }));
-        }
-    }, {
-        key: "handleUsePwdChange",
-        value: function handleUsePwdChange(e) {
-            this.props.newUrlChanged(_extends({}, this.props.newUrl, {
-                usePwd: e.target.checked
-            }));
-        }
-    }, {
         key: "handleNewUrlChanged",
         value: function handleNewUrlChanged(e) {
             var changedNewUrl = _extends({}, this.props.newUrl);
@@ -80873,7 +80850,7 @@ var UrlFormComponent = function (_React$PureComponent) {
                         type: "text",
                         placeholder: "Url",
                         value: this.props.newUrl.value,
-                        onChange: this.handleValueChange.bind(this)
+                        onChange: this.handleNewUrlChanged.bind(this)
                     }),
                     _react2.default.createElement(
                         _reactBootstrap.HelpBlock,
@@ -80888,7 +80865,7 @@ var UrlFormComponent = function (_React$PureComponent) {
                         _reactBootstrap.Checkbox,
                         {
                             id: "usePwd",
-                            onChange: this.handleUsePwdChange.bind(this),
+                            onChange: this.handleNewUrlChanged.bind(this),
                             value: this.props.newUrl.usePwd
                         },
                         "Protect whit a password ?"
@@ -80909,6 +80886,20 @@ var UrlFormComponent = function (_React$PureComponent) {
                     )
                 ),
                 this.renderDateRange(),
+                _react2.default.createElement(
+                    _reactBootstrap.FormGroup,
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.Checkbox,
+                        {
+                            id: "limitVisits",
+                            onChange: this.handleNewUrlChanged.bind(this),
+                            value: this.props.newUrl.limitVisits
+                        },
+                        "Limit number of visits ?"
+                    )
+                ),
+                this.renderLimitVisits(),
                 _react2.default.createElement(
                     _reactBootstrap.Button,
                     { bsStyle: "success", type: "submit" },
@@ -80933,7 +80924,7 @@ var UrlFormComponent = function (_React$PureComponent) {
                         type: "password",
                         placeholder: "Password",
                         value: this.props.newUrl.password,
-                        onChange: this.handlePasswordChange.bind(this)
+                        onChange: this.handleNewUrlChanged.bind(this)
                     }),
                     _react2.default.createElement(
                         _reactBootstrap.HelpBlock,
@@ -80979,6 +80970,18 @@ var UrlFormComponent = function (_React$PureComponent) {
                         placeholder: "To date"
                     })
                 );
+            }
+        }
+    }, {
+        key: "renderLimitVisits",
+        value: function renderLimitVisits() {
+            if (this.props.newUrl.limitVisits) {
+                return _react2.default.createElement(_reactBootstrap.FormControl, {
+                    id: "maxVisits",
+                    type: "number",
+                    value: this.props.newUrl.maxVisits,
+                    onChange: this.handleNewUrlChanged.bind(this)
+                });
             }
         }
     }]);
@@ -81299,8 +81302,10 @@ var initialState = {
             password: "",
             usePwd: false,
             useDate: false,
+            limitVisits: false,
             fromDateTime: localLocale,
-            toDateTime: localLocale
+            toDateTime: localLocale,
+            maxVisits: 0
         },
         lastShortUrl: ""
     }

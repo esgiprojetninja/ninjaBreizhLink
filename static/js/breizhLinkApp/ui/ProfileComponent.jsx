@@ -7,7 +7,7 @@ import {
     Row,
     Table
 } from "react-bootstrap";
-import moment from "moment/src/moment";
+
 
 export default class ProfileComponent extends React.PureComponent {
 

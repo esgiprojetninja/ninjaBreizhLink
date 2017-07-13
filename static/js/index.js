@@ -46,8 +46,10 @@ const initialState = {
             password: "",
             usePwd: false,
             useDate: false,
+            limitVisits: false,
             fromDateTime: localLocale,
-            toDateTime: localLocale
+            toDateTime: localLocale,
+            maxVisits: 0
         },
         lastShortUrl: ""
     }

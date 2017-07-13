@@ -8,5 +8,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface UrlVisitRepository extends CrudRepository<UrlVisit, Long> {
     @Query("SELECT COUNT(uv) FROM UrlVisit uv WHERE uv.url=:url")
-    Long countUrlVisit(@Param("url") Url url);
+    int countUrlVisit(@Param("url") Url url);
 }

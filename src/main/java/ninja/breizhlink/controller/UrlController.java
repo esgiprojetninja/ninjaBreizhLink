@@ -48,6 +48,8 @@ public class UrlController {
             @RequestParam String fd,
             @RequestParam int usePwd,
             @RequestParam int useDate,
+            @RequestParam int limitVisits,
+            @RequestParam int maxVisits,
             @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie
     ) throws Exception {
         Url url = new Url();
@@ -61,6 +63,8 @@ public class UrlController {
         url.setToDateTime(dtf.parseDateTime(td));
         url.setUsePwd(usePwd != 0);
         url.setUseDate(useDate != 0);
+        url.setLimitVisits(limitVisits != 0);
+        url.setMaxVisits(maxVisits);
         System.out.println(url);
         Url savedUrl = urlRepository.save(url);
         if (url.getUsePwd()) {
@@ -97,6 +101,11 @@ public class UrlController {
     @RequestMapping("/{shortUrl}")
     public String handleRedirect(@PathVariable String shortUrl, Model model) {
         Url url = urlRepository.findByShortUrl(shortUrl);
+        if(url.getLimitVisits()) {
+            if (urlVisitRepository.countUrlVisit(url) >= url.getMaxVisits()) {
+                return "url_reached_max_visit";
+            }
+        }
         if (url.getUseDate()) {
             if(url.getToDateTime().isBeforeNow()) {
                 return "url_no_longer_available";
@@ -164,7 +173,7 @@ public class UrlController {
         uv.setUrl(url);
         uv.setDate(new Date());
         urlVisitRepository.save(uv);
-        Long count = urlVisitRepository.countUrlVisit(url);
+        int count = urlVisitRepository.countUrlVisit(url);
         System.out.println("== Cette url a été visitée " + count + " fois. ==");
     }
 }

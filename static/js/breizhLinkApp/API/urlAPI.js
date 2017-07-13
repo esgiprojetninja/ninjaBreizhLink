@@ -27,8 +27,10 @@ const urlAPI = {
                 longUrl: url.value,
                 usePwd: url.usePwd ? 1 : 0,
                 useDate: url.useDate ? 1 : 0,
+                limitVisits: url.limitVisits ? 1 : 0,
                 fd: fromDateTime,
-                td: toDateTime
+                td: toDateTime,
+                maxVisits: url.maxVisits
             }
         });
         return wrapRequest(

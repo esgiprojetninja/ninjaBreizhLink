@@ -28,6 +28,7 @@ const urlAPI = {
                 usePwd: url.usePwd ? 1 : 0,
                 useDate: url.useDate ? 1 : 0,
                 limitVisits: url.limitVisits ? 1 : 0,
+                useReCAPTCHA: url.useReCAPTCHA ? 1 : 0,
                 fd: fromDateTime,
                 td: toDateTime,
                 maxVisits: url.maxVisits

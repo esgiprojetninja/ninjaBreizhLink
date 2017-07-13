@@ -48,6 +48,7 @@ public class UrlController {
             @RequestParam String fd,
             @RequestParam int usePwd,
             @RequestParam int useDate,
+            @RequestParam int useReCAPTCHA,
             @RequestParam int limitVisits,
             @RequestParam int maxVisits,
             @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie
@@ -63,6 +64,7 @@ public class UrlController {
         url.setToDateTime(dtf.parseDateTime(td));
         url.setUsePwd(usePwd != 0);
         url.setUseDate(useDate != 0);
+        url.setUseReCAPTCHA(useReCAPTCHA != 0);
         url.setLimitVisits(limitVisits != 0);
         url.setMaxVisits(maxVisits);
         System.out.println(url);
@@ -114,9 +116,25 @@ public class UrlController {
                 return "url_not_available_yet";
             }
         }
+        if (url.getUseReCAPTCHA()) {
+            return "redirect:/url/recaptcha/" + url.getId();
+        }
         if (url.getUsePwd()) {
             return "redirect:/url/pwd/" + url.getId();
         }
+        this.incrementVisitCounter(url);
+        return "redirect:" + url.getLongUrl();
+    }
+
+    @GetMapping("/recaptcha/{id}")
+    public String handleReCaptchaForm(@PathVariable Long id, Model model) {
+        model.addAttribute("url_id", id);
+        return "redirect_w_recaptcha";
+    }
+
+    @PostMapping("/recaptcha")
+    public String handleGetRecaptchaUrl(@RequestParam("url_id") Long id) {
+        Url url = urlRepository.findOne(id);
         this.incrementVisitCounter(url);
         return "redirect:" + url.getLongUrl();
     }
@@ -156,7 +174,7 @@ public class UrlController {
         );
     }
 
-     private String createShortUrl(int id) {
+     private String createShortUrl(Long id) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();

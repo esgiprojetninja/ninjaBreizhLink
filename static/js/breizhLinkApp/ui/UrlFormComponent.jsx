@@ -94,6 +94,15 @@ export default class UrlFormComponent extends React.PureComponent {
                     </Checkbox>
                 </FormGroup>
                 {this.renderLimitVisits()}
+                <FormGroup>
+                    <Checkbox
+                        id="useReCAPTCHA"
+                        onChange={this.handleNewUrlChanged.bind(this)}
+                        value={this.props.newUrl.useReCAPTCHA}
+                    >
+                        Use ReCAPTCHA ?
+                    </Checkbox>
+                </FormGroup>
                 <Button bsStyle="success" type="submit">Shorten</Button>
             </form>
         );

@@ -13,7 +13,7 @@ import java.util.List;
 public class Url {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     private String longUrl = "";
     private String shortUrl = "";
     private String password = "";
@@ -30,15 +30,16 @@ public class Url {
     private List<UrlVisit> urlVisits = new ArrayList<UrlVisit>();
     private Boolean limitVisits = false;
     private int maxVisits = 0;
+    private Boolean useReCAPTCHA = false;
 
     public Url() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -130,6 +131,14 @@ public class Url {
         this.maxVisits = maxVisits;
     }
 
+    public Boolean getUseReCAPTCHA() {
+        return useReCAPTCHA;
+    }
+
+    public void setUseReCAPTCHA(Boolean useReCAPTCHA) {
+        this.useReCAPTCHA = useReCAPTCHA;
+    }
+
     @Override
     public String toString() {
         return "Url{" +
@@ -145,6 +154,7 @@ public class Url {
                 ", urlVisits=" + urlVisits +
                 ", limitVisits=" + limitVisits +
                 ", maxVisits=" + maxVisits +
+                ", useReCAPTCHA=" + useReCAPTCHA +
                 '}';
     }
 }

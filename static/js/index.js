@@ -47,6 +47,7 @@ const initialState = {
             usePwd: false,
             useDate: false,
             limitVisits: false,
+            useReCAPTCHA: false,
             fromDateTime: localLocale,
             toDateTime: localLocale,
             maxVisits: 0

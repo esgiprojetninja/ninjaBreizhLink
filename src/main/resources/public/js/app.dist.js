@@ -51945,6 +51945,7 @@ var urlAPI = {
                 usePwd: url.usePwd ? 1 : 0,
                 useDate: url.useDate ? 1 : 0,
                 limitVisits: url.limitVisits ? 1 : 0,
+                useReCAPTCHA: url.useReCAPTCHA ? 1 : 0,
                 fd: fromDateTime,
                 td: toDateTime,
                 maxVisits: url.maxVisits
@@ -80901,6 +80902,19 @@ var UrlFormComponent = function (_React$PureComponent) {
                 ),
                 this.renderLimitVisits(),
                 _react2.default.createElement(
+                    _reactBootstrap.FormGroup,
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.Checkbox,
+                        {
+                            id: "useReCAPTCHA",
+                            onChange: this.handleNewUrlChanged.bind(this),
+                            value: this.props.newUrl.useReCAPTCHA
+                        },
+                        "Use ReCAPTCHA ?"
+                    )
+                ),
+                _react2.default.createElement(
                     _reactBootstrap.Button,
                     { bsStyle: "success", type: "submit" },
                     "Shorten"
@@ -81303,6 +81317,7 @@ var initialState = {
             usePwd: false,
             useDate: false,
             limitVisits: false,
+            useReCAPTCHA: false,
             fromDateTime: localLocale,
             toDateTime: localLocale,
             maxVisits: 0

@@ -90,8 +90,16 @@ public class UrlController {
     }
 
     @RequestMapping("/{shortUrl}")
-    public String handleRedirect(@PathVariable String shortUrl) {
+    public String handleRedirect(@PathVariable String shortUrl, Model model) {
         Url url = urlRepository.findByShortUrl(shortUrl);
+        if (url.getUseDate()) {
+            if(url.getToDateTime().isBeforeNow()) {
+                return "url_no_longer_available";
+            } else if (url.getFromDateTime().isAfterNow()) {
+                model.addAttribute("date", url.getFromDateTime().toDateTime());
+                return "url_not_available_yet";
+            }
+        }
         if (url.getUsePwd()) {
             return "redirect:/url/pwd/" + url.getId();
         }

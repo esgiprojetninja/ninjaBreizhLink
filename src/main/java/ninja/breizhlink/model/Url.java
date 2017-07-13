@@ -15,18 +15,18 @@ public class Url {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-    private String longUrl = "0";
-    private String shortUrl = "0";
-    private String password = "0";
+    private String longUrl = "";
+    private String shortUrl = "";
+    private String password = "";
     private Boolean usePwd = false;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     private Boolean useDate = false;
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime fromTime;
+    private DateTime fromDateTime;
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime toTime;
+    private DateTime toDateTime;
 
     public Url() {
     }
@@ -79,20 +79,20 @@ public class Url {
         this.user = user;
     }
 
-    public DateTime getFromTime() {
-        return fromTime;
+    public DateTime getFromDateTime() {
+        return fromDateTime;
     }
 
-    public void setFromTime(DateTime fromTime) {
-        this.fromTime = fromTime;
+    public void setFromDateTime(DateTime fromDateTime) {
+        this.fromDateTime = fromDateTime;
     }
 
-    public DateTime getToTime() {
-        return toTime;
+    public DateTime getToDateTime() {
+        return toDateTime;
     }
 
-    public void setToTime(DateTime toTime) {
-        this.toTime = toTime;
+    public void setToDateTime(DateTime toDateTime) {
+        this.toDateTime = toDateTime;
     }
 
     public Boolean getUseDate() {
@@ -113,8 +113,8 @@ public class Url {
                 ", usePwd=" + usePwd +
                 ", user=" + user +
                 ", useDate=" + useDate +
-                ", fromTime=" + fromTime +
-                ", toTime=" + toTime +
+                ", fromDateTime=" + fromDateTime +
+                ", toDateTime=" + toDateTime +
                 '}';
     }
 }

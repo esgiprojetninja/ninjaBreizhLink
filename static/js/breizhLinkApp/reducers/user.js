@@ -82,7 +82,10 @@ const user = (state = {}, action) => {
                 ...state,
                 currentUser: {
                     ...state.currentUser,
-                    urls: action.urls
+                    user: {
+                        ...state.currentUser.user,
+                        urls: action.urls
+                    }
                 }
             };
         default:

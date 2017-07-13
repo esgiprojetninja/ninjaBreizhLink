@@ -8,9 +8,8 @@ import {
     FormGroup,
     HelpBlock
 } from "react-bootstrap";
-import DatePicker from "react-datepicker";
+import Datetime from "react-datetime";
 
-import "react-datepicker/dist/react-datepicker.css";
 
 
 export default class UrlFormComponent extends React.PureComponent {
@@ -42,17 +41,17 @@ export default class UrlFormComponent extends React.PureComponent {
         this.props.newUrlChanged(changedNewUrl);
     }
 
-    fromDateChanged(date) {
+    fromDateTimeChanged(date) {
         this.props.newUrlChanged({
             ...this.props.newUrl,
-            fromDate: date
+            fromDateTime: date
         });
     }
 
-    toDateChanged(date) {
+    toDateTimeChanged(date) {
         this.props.newUrlChanged({
             ...this.props.newUrl,
-            toDate: date
+            toDateTime: date
         });
     }
 
@@ -139,16 +138,18 @@ export default class UrlFormComponent extends React.PureComponent {
         if (this.props.newUrl.useDate) {
             return (
                 <div>
-                    <DatePicker
-                        id="fromDate"
-                        selected={this.props.newUrl.fromDate}
-                        onChange={this.fromDateChanged.bind(this)}
+                    <Datetime
+                        id="fromDateTime"
+                        value={this.props.newUrl.fromDateTime}
+                        defaultValue={this.props.newUrl.toDateTime}
+                        onChange={this.fromDateTimeChanged.bind(this)}
                         placeholder="From date"
                     />
-                    <DatePicker
-                        id="toDate"
-                        selected={this.props.newUrl.toDate}
-                        onChange={this.toDateChanged.bind(this)}
+                    <Datetime
+                        id="toDateTime"
+                        value={this.props.newUrl.toDateTime}
+                        defaultValue={this.props.newUrl.toDateTime}
+                        onChange={this.toDateTimeChanged.bind(this)}
                         placeholder="To date"
                     />
                 </div>

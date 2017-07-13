@@ -36,6 +36,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
+    "react-datetime": "^2.8.10",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0",
@@ -47,7 +48,6 @@
     "css-loader": "^0.28.4",
     "moment": "^2.18.1",
     "react": "^15.6.1",
-    "react-datepicker": "^0.51.0",
     "react-dom": "^15.6.1",
     "style-loader": "^0.18.2"
   }

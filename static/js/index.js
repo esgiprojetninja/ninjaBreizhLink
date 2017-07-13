@@ -9,6 +9,10 @@ import "moment/locale/fr";
 import app from "./breizhLinkApp/reducers/app";
 import BreizhLinkApp from "./breizhLinkApp/container/BreizhLinkApp";
 
+
+const localLocale = moment();
+localLocale.locale("fr");
+
 const loggerMiddleware = createLogger();
 
 const initialState = {
@@ -42,8 +46,8 @@ const initialState = {
             password: "",
             usePwd: false,
             useDate: false,
-            fromDate: moment(),
-            toDate: moment()
+            fromDateTime: localLocale,
+            toDateTime: localLocale
         },
         lastShortUrl: ""
     }

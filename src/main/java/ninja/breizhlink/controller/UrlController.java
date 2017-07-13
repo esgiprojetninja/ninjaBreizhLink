@@ -7,6 +7,8 @@ import ninja.breizhlink.model.repository.UserRepository;
 import ninja.breizhlink.utils.SessionIdentifierManager;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,21 +37,30 @@ public class UrlController {
     @PostMapping(path="/add")
     public @ResponseBody
     ResponseEntity addNewUrl(
-            @ModelAttribute Url url,
+            @RequestParam String password,
+            @RequestParam String longUrl,
             @RequestParam String td,
             @RequestParam String fd,
+            @RequestParam int usePwd,
+            @RequestParam int useDate,
             @CookieValue(value = "session_id", defaultValue = "0") String sessionIDCookie
     ) throws Exception {
+        Url url = new Url();
         User user = userRepository.findBySessionID(sessionIDCookie);
         if (user != null) {
             url.setUser(user);
         }
-        url.setFromTime(new DateTime(fd));
-        url.setToTime(new DateTime(td));
+        url.setLongUrl(longUrl);
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+        url.setFromDateTime(dtf.parseDateTime(fd));
+        url.setToDateTime(dtf.parseDateTime(td));
+        url.setUsePwd(usePwd != 0);
+        url.setUseDate(useDate != 0);
+        System.out.println(url);
         Url savedUrl = urlRepository.save(url);
         if (url.getUsePwd()) {
             passwordEncoder = new BCryptPasswordEncoder();
-            savedUrl.setPassword(passwordEncoder.encode(url.getPassword()));
+            savedUrl.setPassword(passwordEncoder.encode(password));
         }
         savedUrl.setShortUrl(this.createShortUrl(savedUrl.getId()));
         Url urlToReturn = urlRepository.save(savedUrl);

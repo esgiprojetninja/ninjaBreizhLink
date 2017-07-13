@@ -17,20 +17,18 @@ const urlAPI = {
         );
     },
     addUrl(url) {
+        const fromDateTime = url.fromDateTime.format("YYYY-MM-DD HH:mm");
+        const toDateTime = url.toDateTime.format("YYYY-MM-DD HH:mm");
         _addUrl = $.ajax({
             method: "POST",
             url: baseUrl + "add/",
             data: {
-                url: {
-                    ...url,
-                    longUrl: url.value,
-                    password: url.password.length > 0 ? url.password : null,
-                    usePwd: url.usePwd,
-                    fromDate: url.fromDate.format(),
-                    toDate: url.toDate.format()
-                },
-                fd: url.fromDate.format("YYYY-MM-DDTHH:mm"),
-                td: url.toDate.format("YYYY-MM-DDTHH:mm")
+                password: url.password.length > 0 ? url.password : null,
+                longUrl: url.value,
+                usePwd: url.usePwd ? 1 : 0,
+                useDate: url.useDate ? 1 : 0,
+                fd: fromDateTime,
+                td: toDateTime
             }
         });
         return wrapRequest(

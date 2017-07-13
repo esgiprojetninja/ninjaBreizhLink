@@ -4,17 +4,16 @@ package ninja.breizhlink.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Url {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String longUrl = "";
     private String shortUrl = "";
     private String password = "";
@@ -27,15 +26,17 @@ public class Url {
     private DateTime fromDateTime;
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime toDateTime;
+    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UrlVisit> urlVisits = new ArrayList<UrlVisit>();
 
     public Url() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -101,6 +102,14 @@ public class Url {
 
     public void setUseDate(Boolean useDate) {
         this.useDate = useDate;
+    }
+
+    public List<UrlVisit> getUrlVisits() {
+        return urlVisits;
+    }
+
+    public void setUrlVisits(List<UrlVisit> urlVisits) {
+        this.urlVisits = urlVisits;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package ninja.breizhlink.controller;
 
 import ninja.breizhlink.model.Url;
+import ninja.breizhlink.model.UrlVisit;
 import ninja.breizhlink.model.User;
 import ninja.breizhlink.model.repository.UrlRepository;
+import ninja.breizhlink.model.repository.UrlVisitRepository;
 import ninja.breizhlink.model.repository.UserRepository;
 import ninja.breizhlink.utils.SessionIdentifierManager;
 import org.joda.time.DateTime;
@@ -20,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.Random;
 
 @Controller
@@ -30,6 +33,8 @@ public class UrlController {
     private UrlRepository urlRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UrlVisitRepository urlVisitRepository;
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private SessionIdentifierManager sessionIdentifierManager;
@@ -103,6 +108,7 @@ public class UrlController {
         if (url.getUsePwd()) {
             return "redirect:/url/pwd/" + url.getId();
         }
+        this.incrementVisitCounter(url);
         return "redirect:" + url.getLongUrl();
     }
 
@@ -117,6 +123,7 @@ public class UrlController {
         Url url = urlRepository.findOne(id);
         passwordEncoder = new BCryptPasswordEncoder();
         if(passwordEncoder.matches(password, url.getPassword())) {
+            this.incrementVisitCounter(url);
             return "redirect:" + url.getLongUrl();
         }
         return "redirect:/url/pwd/" + url.getId();
@@ -140,7 +147,7 @@ public class UrlController {
         );
     }
 
-     private String createShortUrl(Long id) {
+     private String createShortUrl(int id) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
@@ -150,5 +157,14 @@ public class UrlController {
             sb.append(c);
         }
         return sb.toString();
+    }
+
+    private void incrementVisitCounter(Url url) {
+        UrlVisit uv = new UrlVisit();
+        uv.setUrl(url);
+        uv.setDate(new Date());
+        urlVisitRepository.save(uv);
+        Long count = urlVisitRepository.countUrlVisit(url);
+        System.out.println("== Cette url a été visitée " + count + " fois. ==");
     }
 }

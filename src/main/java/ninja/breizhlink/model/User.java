@@ -5,14 +5,13 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private int id = 0;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     @Column(unique = true)
     private String email = "";
     private String login = "";

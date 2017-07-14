@@ -3,7 +3,8 @@ import {connect} from "react-redux";
 import ProfileComponent from "../ui/ProfileComponent.jsx";
 
 import {
-    getMyUrls
+    getMyUrls,
+    getMe
 } from "../actions/userActions";
 
 const mapStateToProps = state => {
@@ -16,6 +17,9 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchMyUrls: () => {
             dispatch(getMyUrls());
+        },
+        fetchMe: () => {
+            dispatch(getMe());
         }
     };
 };

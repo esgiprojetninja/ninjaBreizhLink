@@ -14,8 +14,12 @@ public class SessionIdentifierManager {
     public HttpHeaders getHeaderWithSessionIDCookie(String token) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         try {
+            if(token.compareTo("0") == 0) {
+                headers.add("Set-Cookie","session_id=0;path=/;HttpOnly");
+                return headers;
+            }
             User user = userRepository.findBySessionID(token);
-            if (user == null || token.compareTo("0") == 0) {
+            if (user == null) {
                 headers.add("Set-Cookie","session_id=0;path=/;HttpOnly");
                 return headers;
             }

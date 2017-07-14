@@ -15096,6 +15096,8 @@ exports.getMyUrls = getMyUrls;
 
 var _userActionTypes = __webpack_require__(411);
 
+var _viewActions = __webpack_require__(412);
+
 var _userAPI = __webpack_require__(718);
 
 var _userAPI2 = _interopRequireDefault(_userAPI);
@@ -15151,7 +15153,7 @@ function addNewUser(user) {
     return function (dispatch) {
         // TODO dispatch loading
         return _userAPI2.default.addUser(user).then(function (data) {
-            return dispatch(fetchAllUsers());
+            return dispatch((0, _viewActions.changeView)("profile"));
         }, function (reason) {
             return dispatch(receiveError(reason));
         });
@@ -84013,6 +84015,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         fetchMyUrls: function fetchMyUrls() {
             dispatch((0, _userActions.getMyUrls)());
+        },
+        fetchMe: function fetchMe() {
+            dispatch((0, _userActions.getMe)());
         }
     };
 };
@@ -84800,6 +84805,7 @@ var ProfileComponent = function (_React$PureComponent) {
         key: "componentDidMount",
         value: function componentDidMount() {
             this.props.fetchMyUrls();
+            this.props.fetchMe();
         }
     }, {
         key: "openModal",
@@ -85099,7 +85105,8 @@ ProfileComponent.propTypes = {
         id: _propTypes2.default.number.isRequired,
         urls: _propTypes2.default.array.isRequired
     }).isRequired,
-    fetchMyUrls: _propTypes2.default.func.isRequired
+    fetchMyUrls: _propTypes2.default.func.isRequired,
+    fetchMe: _propTypes2.default.func.isRequired
 };
 
 /***/ }),

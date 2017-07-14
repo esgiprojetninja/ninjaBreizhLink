@@ -41,7 +41,13 @@ public class UserController {
             userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userRepository.save(userToSave);
             if (savedUser != null) {
-                return new ResponseEntity<>(savedUser, HttpStatus.OK);
+                savedUser.renewSessionID();
+                userRepository.save(savedUser);
+                return new ResponseEntity<>(
+                        savedUser,
+                        sessionIdentifierManager.getHeaderWithSessionIDCookie(savedUser.getSessionID()),
+                        HttpStatus.OK
+                );
             } else {
                 return new ResponseEntity<>("Couldn't save",HttpStatus.BAD_REQUEST);
             }

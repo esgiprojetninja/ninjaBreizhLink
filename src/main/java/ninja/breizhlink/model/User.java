@@ -75,7 +75,9 @@ public class User {
 
     public void renewSessionID() {
         SecureRandom random = new SecureRandom();
-        this.sessionID = new BigInteger(130, random).toString(32);
+        String id = Long.toString(this.id);
+        String rand = new BigInteger(130, random).toString(32);
+        this.sessionID = id + rand;
     }
 
     public List<Url> getUrls() {

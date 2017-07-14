@@ -25,6 +25,7 @@ export default class ProfileComponent extends React.PureComponent {
 
     componentDidMount() {
         this.props.fetchMyUrls();
+        this.props.fetchMe();
     }
 
     openModal(urlVisits) {
@@ -184,5 +185,6 @@ ProfileComponent.propTypes = {
         id: T.number.isRequired,
         urls: T.array.isRequired
     }).isRequired,
-    fetchMyUrls: T.func.isRequired
+    fetchMyUrls: T.func.isRequired,
+    fetchMe: T.func.isRequired
 };

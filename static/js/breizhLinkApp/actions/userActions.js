@@ -11,6 +11,7 @@ import {
     REQUEST_URLS,
     RECEIVE_URLS
 } from "./userActionTypes";
+import {changeView} from "./viewActions";
 import userAPI from "../API/userAPI";
 import urlAPI from "../API/urlAPI";
 
@@ -59,7 +60,7 @@ export function addNewUser(user) {
     return function (dispatch) {
         // TODO dispatch loading
         return userAPI.addUser(user).then(
-            (data) => dispatch(fetchAllUsers()),
+            (data) => dispatch(changeView("profile")),
             (reason) => dispatch(receiveError(reason))
         );
     };

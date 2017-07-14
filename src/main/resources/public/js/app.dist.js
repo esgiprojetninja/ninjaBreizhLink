@@ -15194,7 +15194,8 @@ function login(user) {
     return function (dispatch) {
         dispatch(requestLogin());
         return _userAPI2.default.login(user).then(function (data) {
-            return dispatch(loginSuccess(data));
+            dispatch(loginSuccess(data));
+            dispatch((0, _viewActions.changeView)("profile"));
         }, function (reason) {
             return dispatch(loginError(reason));
         });
@@ -85059,13 +85060,13 @@ var ProfileComponent = function (_React$PureComponent) {
             dates.forEach(function (date) {
                 var exist = false;
                 cleanedData.forEach(function (item) {
-                    if (item[0] === date) {
+                    if ((0, _moment2.default)(date).format("DD:MM:YYYY") === item[0]) {
                         exist = true;
                         item[1]++;
                     }
                 });
                 if (!exist) {
-                    cleanedData.push([(0, _moment2.default)().second(date).format(), 1]);
+                    cleanedData.push([(0, _moment2.default)(date).format("DD:MM:YYYY"), 1]);
                 }
             });
             var options = {

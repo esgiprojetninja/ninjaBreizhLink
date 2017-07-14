@@ -27,8 +27,8 @@ public class UrlVisit {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return date.toString();
     }
 
     public void setDate(Date date) {

@@ -100,7 +100,10 @@ export function login(user) {
     return function (dispatch) {
         dispatch(requestLogin());
         return userAPI.login(user).then(
-            data => dispatch(loginSuccess(data)),
+            data => {
+                dispatch(loginSuccess(data));
+                dispatch(changeView("profile"));
+            },
             reason => dispatch(loginError(reason))
         );
     };

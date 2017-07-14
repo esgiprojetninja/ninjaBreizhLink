@@ -142,14 +142,14 @@ export default class ProfileComponent extends React.PureComponent {
         dates.forEach(date => {
             let exist = false;
             cleanedData.forEach(item => {
-                if (item[0] === date) {
+                if (moment(date).format("DD:MM:YYYY") === item[0]) {
                     exist = true;
                     item[1]++;
                 }
             });
             if (!exist) {
                 cleanedData.push([
-                    moment().second(date).format(),
+                    moment(date).format("DD:MM:YYYY"),
                     1
                 ]);
             }

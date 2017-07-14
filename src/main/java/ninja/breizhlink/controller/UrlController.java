@@ -57,6 +57,11 @@ public class UrlController {
         User user = userRepository.findBySessionID(sessionIDCookie);
         if (user != null) {
             url.setUser(user);
+        } else if ((useDate != 0 || useReCAPTCHA != 0 || limitVisits != 0)) {
+            return new ResponseEntity<>(
+                    "You are not logged in !",
+                    HttpStatus.UNAUTHORIZED
+            );
         }
         url.setLongUrl(longUrl);
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");

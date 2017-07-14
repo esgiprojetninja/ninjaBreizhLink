@@ -74,38 +74,48 @@ export default class UrlFormComponent extends React.PureComponent {
                     </Checkbox>
                 </FormGroup>
                 {this.renderPasswordInput()}
-                <FormGroup>
-                    <Checkbox
-                        id="useDate"
-                        onChange={this.handleNewUrlChanged.bind(this)}
-                        value={this.props.newUrl.useDate}
-                    >
-                        Define a validity period ?
-                    </Checkbox>
-                </FormGroup>
-                {this.renderDateRange()}
-                <FormGroup>
-                    <Checkbox
-                        id="limitVisits"
-                        onChange={this.handleNewUrlChanged.bind(this)}
-                        value={this.props.newUrl.limitVisits}
-                    >
-                        Limit number of visits ?
-                    </Checkbox>
-                </FormGroup>
-                {this.renderLimitVisits()}
-                <FormGroup>
-                    <Checkbox
-                        id="useReCAPTCHA"
-                        onChange={this.handleNewUrlChanged.bind(this)}
-                        value={this.props.newUrl.useReCAPTCHA}
-                    >
-                        Use ReCAPTCHA ?
-                    </Checkbox>
-                </FormGroup>
+                {this.renderAdvancedOptions()}
                 <Button bsStyle="success" type="submit">Shorten</Button>
             </form>
         );
+    }
+
+    renderAdvancedOptions() {
+        if (this.props.loggedIn) {
+            return (
+                <div>
+                    <FormGroup>
+                        <Checkbox
+                            id="useDate"
+                            onChange={this.handleNewUrlChanged.bind(this)}
+                            value={this.props.newUrl.useDate}
+                        >
+                            Define a validity period ?
+                        </Checkbox>
+                    </FormGroup>
+                    {this.renderDateRange()}
+                    <FormGroup>
+                        <Checkbox
+                            id="limitVisits"
+                            onChange={this.handleNewUrlChanged.bind(this)}
+                            value={this.props.newUrl.limitVisits}
+                        >
+                            Limit number of visits ?
+                        </Checkbox>
+                    </FormGroup>
+                    {this.renderLimitVisits()}
+                    <FormGroup>
+                        <Checkbox
+                            id="useReCAPTCHA"
+                            onChange={this.handleNewUrlChanged.bind(this)}
+                            value={this.props.newUrl.useReCAPTCHA}
+                        >
+                            Use ReCAPTCHA ?
+                        </Checkbox>
+                    </FormGroup>
+                </div>
+            );
+        }
     }
 
     renderPasswordInput() {
@@ -173,5 +183,6 @@ UrlFormComponent.propTypes = {
     newUrlChanged: T.func.isRequired,
     newUrlSubmitted: T.func.isRequired,
     newUrl: T.object.isRequired,
-    lastShortUrl: T.string.isRequired
+    lastShortUrl: T.string.isRequired,
+    loggedIn: T.bool.isRequired
 };

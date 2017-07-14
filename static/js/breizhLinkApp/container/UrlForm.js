@@ -10,7 +10,8 @@ import UrlFormComponent from "../ui/UrlFormComponent.jsx";
 const mapStateToProps = (state) => {
     return {
         newUrl: state.url.newUrl,
-        lastShortUrl: state.url.lastShortUrl
+        lastShortUrl: state.url.lastShortUrl,
+        loggedIn: state.user.currentUser.user.id !== null
     };
 };
 

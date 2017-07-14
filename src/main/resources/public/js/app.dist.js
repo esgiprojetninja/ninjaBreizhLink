@@ -84045,7 +84045,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mapStateToProps = function mapStateToProps(state) {
     return {
         newUrl: state.url.newUrl,
-        lastShortUrl: state.url.lastShortUrl
+        lastShortUrl: state.url.lastShortUrl,
+        loggedIn: state.user.currentUser.user.id !== null
     };
 };
 
@@ -84065,43 +84066,7 @@ var UrlForm = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Url
 exports.default = UrlForm;
 
 /***/ }),
-/* 723 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _reactRedux = __webpack_require__(58);
-
-var _userActions = __webpack_require__(120);
-
-var _UserListComponent = __webpack_require__(734);
-
-var _UserListComponent2 = _interopRequireDefault(_UserListComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var mapStateToProps = function mapStateToProps(state) {
-    return state.user;
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        onGetUserClicked: function onGetUserClicked() {
-            dispatch((0, _userActions.fetchAllUsers)());
-        }
-    };
-};
-
-var UserList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_UserListComponent2.default);
-
-exports.default = UserList;
-
-/***/ }),
+/* 723 */,
 /* 724 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -84385,31 +84350,6 @@ var BreizhLinkAppComponent = function (_React$PureComponent) {
                                     onClick: this.handleSwitchView.bind(this, "url")
                                 },
                                 "Urls"
-                            ),
-                            _react2.default.createElement(
-                                _reactBootstrap.NavDropdown,
-                                { eventKey: 3, title: "Dropdown", id: "basic-nav-dropdown" },
-                                _react2.default.createElement(
-                                    _reactBootstrap.MenuItem,
-                                    { eventKey: 3.1 },
-                                    "Action"
-                                ),
-                                _react2.default.createElement(
-                                    _reactBootstrap.MenuItem,
-                                    { eventKey: 3.2 },
-                                    "Another action"
-                                ),
-                                _react2.default.createElement(
-                                    _reactBootstrap.MenuItem,
-                                    { eventKey: 3.3 },
-                                    "Something else here"
-                                ),
-                                _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
-                                _react2.default.createElement(
-                                    _reactBootstrap.MenuItem,
-                                    { eventKey: 3.3 },
-                                    "Separated link"
-                                )
                             )
                         ),
                         this.renderUserNavbarPart()
@@ -85344,53 +85284,64 @@ var UrlFormComponent = function (_React$PureComponent) {
                     )
                 ),
                 this.renderPasswordInput(),
-                _react2.default.createElement(
-                    _reactBootstrap.FormGroup,
-                    null,
-                    _react2.default.createElement(
-                        _reactBootstrap.Checkbox,
-                        {
-                            id: "useDate",
-                            onChange: this.handleNewUrlChanged.bind(this),
-                            value: this.props.newUrl.useDate
-                        },
-                        "Define a validity period ?"
-                    )
-                ),
-                this.renderDateRange(),
-                _react2.default.createElement(
-                    _reactBootstrap.FormGroup,
-                    null,
-                    _react2.default.createElement(
-                        _reactBootstrap.Checkbox,
-                        {
-                            id: "limitVisits",
-                            onChange: this.handleNewUrlChanged.bind(this),
-                            value: this.props.newUrl.limitVisits
-                        },
-                        "Limit number of visits ?"
-                    )
-                ),
-                this.renderLimitVisits(),
-                _react2.default.createElement(
-                    _reactBootstrap.FormGroup,
-                    null,
-                    _react2.default.createElement(
-                        _reactBootstrap.Checkbox,
-                        {
-                            id: "useReCAPTCHA",
-                            onChange: this.handleNewUrlChanged.bind(this),
-                            value: this.props.newUrl.useReCAPTCHA
-                        },
-                        "Use ReCAPTCHA ?"
-                    )
-                ),
+                this.renderAdvancedOptions(),
                 _react2.default.createElement(
                     _reactBootstrap.Button,
                     { bsStyle: "success", type: "submit" },
                     "Shorten"
                 )
             );
+        }
+    }, {
+        key: "renderAdvancedOptions",
+        value: function renderAdvancedOptions() {
+            if (this.props.loggedIn) {
+                return _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Checkbox,
+                            {
+                                id: "useDate",
+                                onChange: this.handleNewUrlChanged.bind(this),
+                                value: this.props.newUrl.useDate
+                            },
+                            "Define a validity period ?"
+                        )
+                    ),
+                    this.renderDateRange(),
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Checkbox,
+                            {
+                                id: "limitVisits",
+                                onChange: this.handleNewUrlChanged.bind(this),
+                                value: this.props.newUrl.limitVisits
+                            },
+                            "Limit number of visits ?"
+                        )
+                    ),
+                    this.renderLimitVisits(),
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Checkbox,
+                            {
+                                id: "useReCAPTCHA",
+                                onChange: this.handleNewUrlChanged.bind(this),
+                                value: this.props.newUrl.useReCAPTCHA
+                            },
+                            "Use ReCAPTCHA ?"
+                        )
+                    )
+                );
+            }
         }
     }, {
         key: "renderPasswordInput",
@@ -85481,7 +85432,8 @@ UrlFormComponent.propTypes = {
     newUrlChanged: _propTypes2.default.func.isRequired,
     newUrlSubmitted: _propTypes2.default.func.isRequired,
     newUrl: _propTypes2.default.object.isRequired,
-    lastShortUrl: _propTypes2.default.string.isRequired
+    lastShortUrl: _propTypes2.default.string.isRequired,
+    loggedIn: _propTypes2.default.bool.isRequired
 };
 
 /***/ }),
@@ -85504,10 +85456,6 @@ var _react2 = _interopRequireDefault(_react);
 var _propTypes = __webpack_require__(8);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _UserList = __webpack_require__(723);
-
-var _UserList2 = _interopRequireDefault(_UserList);
 
 var _LogBox = __webpack_require__(720);
 
@@ -85536,8 +85484,7 @@ var UserComponent = function (_React$PureComponent) {
             return _react2.default.createElement(
                 "div",
                 null,
-                this.renderLogBox(),
-                _react2.default.createElement(_UserList2.default, null)
+                this.renderLogBox()
             );
         }
     }, {
@@ -85558,159 +85505,7 @@ UserComponent.propTypes = {
 };
 
 /***/ }),
-/* 734 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(8);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactBootstrap = __webpack_require__(70);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var UserListComponent = function (_React$PureComponent) {
-    _inherits(UserListComponent, _React$PureComponent);
-
-    function UserListComponent() {
-        _classCallCheck(this, UserListComponent);
-
-        return _possibleConstructorReturn(this, (UserListComponent.__proto__ || Object.getPrototypeOf(UserListComponent)).apply(this, arguments));
-    }
-
-    _createClass(UserListComponent, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            this.props.onGetUserClicked();
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            if (this.props.loading) {
-                return _react2.default.createElement(
-                    "p",
-                    null,
-                    "Loading..."
-                );
-            }
-            return _react2.default.createElement(
-                _reactBootstrap.Panel,
-                { header: _react2.default.createElement(
-                        "h3",
-                        null,
-                        "User list"
-                    ) },
-                _react2.default.createElement(
-                    _reactBootstrap.Table,
-                    null,
-                    _react2.default.createElement(
-                        "thead",
-                        null,
-                        _react2.default.createElement(
-                            "tr",
-                            null,
-                            _react2.default.createElement(
-                                "th",
-                                null,
-                                "Id"
-                            ),
-                            _react2.default.createElement(
-                                "th",
-                                null,
-                                "Login"
-                            ),
-                            _react2.default.createElement(
-                                "th",
-                                null,
-                                "Email"
-                            ),
-                            _react2.default.createElement(
-                                "th",
-                                null,
-                                "Session id"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "tbody",
-                        null,
-                        this.renderUsers()
-                    )
-                ),
-                _react2.default.createElement(
-                    "button",
-                    {
-                        type: "button",
-                        onClick: this.props.onGetUserClicked
-                    },
-                    "Get users"
-                )
-            );
-        }
-    }, {
-        key: "renderUsers",
-        value: function renderUsers() {
-            return this.props.users.map(function (u) {
-                return _react2.default.createElement(
-                    "tr",
-                    { key: u.id },
-                    _react2.default.createElement(
-                        "td",
-                        null,
-                        u.id
-                    ),
-                    _react2.default.createElement(
-                        "td",
-                        null,
-                        u.login
-                    ),
-                    _react2.default.createElement(
-                        "td",
-                        null,
-                        u.email
-                    ),
-                    _react2.default.createElement(
-                        "td",
-                        null,
-                        u.sessionID
-                    )
-                );
-            });
-        }
-    }]);
-
-    return UserListComponent;
-}(_react2.default.PureComponent);
-
-exports.default = UserListComponent;
-
-
-UserListComponent.propTypes = {
-    users: _propTypes2.default.array,
-    loading: _propTypes2.default.bool,
-    onGetUserClicked: _propTypes2.default.func
-};
-
-/***/ }),
+/* 734 */,
 /* 735 */
 /***/ (function(module, exports, __webpack_require__) {
 

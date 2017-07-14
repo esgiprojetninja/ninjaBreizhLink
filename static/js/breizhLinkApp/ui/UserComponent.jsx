@@ -1,6 +1,5 @@
 import React from "react";
 import T from "prop-types";
-import UserList from "../container/UserList";
 import LogBox from "../container/LogBox";
 
 export default class UserComponent extends React.PureComponent {
@@ -8,7 +7,6 @@ export default class UserComponent extends React.PureComponent {
         return (
             <div>
                 {this.renderLogBox()}
-                <UserList />
             </div>
         );
     }

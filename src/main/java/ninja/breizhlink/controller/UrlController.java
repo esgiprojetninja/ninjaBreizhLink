@@ -7,8 +7,7 @@ import ninja.breizhlink.model.repository.UrlRepository;
 import ninja.breizhlink.model.repository.UrlVisitRepository;
 import ninja.breizhlink.model.repository.UserRepository;
 import ninja.breizhlink.utils.SessionIdentifierManager;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
+import ninja.breizhlink.utils.VerifyRecaptcha;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @CrossOrigin(origins = "http://b.li:8080")
@@ -121,40 +122,47 @@ public class UrlController {
                 return "url_not_available_yet";
             }
         }
-        if (url.getUseReCAPTCHA()) {
-            return "redirect:/url/recaptcha/" + url.getId();
-        }
-        if (url.getUsePwd()) {
+        if (url.getUseReCAPTCHA() || url.getUsePwd()) {
             return "redirect:/url/pwd/" + url.getId();
         }
         this.incrementVisitCounter(url);
         return "redirect:" + url.getLongUrl();
     }
 
-    @GetMapping("/recaptcha/{id}")
-    public String handleReCaptchaForm(@PathVariable Long id, Model model) {
-        model.addAttribute("url_id", id);
-        return "redirect_w_recaptcha";
-    }
-
-    @PostMapping("/recaptcha")
-    public String handleGetRecaptchaUrl(@RequestParam("url_id") Long id) {
-        Url url = urlRepository.findOne(id);
-        this.incrementVisitCounter(url);
-        return "redirect:" + url.getLongUrl();
-    }
-
     @GetMapping("/pwd/{id}")
     public String handleGetUrlPwd(@PathVariable Long id, Model model) {
+        Url url = urlRepository.findOne(id);
+        if(url.getUseReCAPTCHA()) {
+            model.addAttribute("use_captcha", true);
+        }
+        if(url.getUsePwd()) {
+            model.addAttribute("use_pwd", true);
+        }
         model.addAttribute("url_id", id);
         return "redirect_w_pwd";
     }
 
     @PostMapping("/pwd")
-    public String handlePostUrlPwd(@RequestParam("password") String password, @RequestParam("url_id") Long id) {
+    public String handlePostUrlPwd(
+            @RequestParam(value = "password", required = false, defaultValue = "") String password,
+            @RequestParam(value = "g-recaptcha-response", required = false) String gRecaptchaResponse,
+            @RequestParam("url_id") Long id
+    ) throws IOException {
         Url url = urlRepository.findOne(id);
-        passwordEncoder = new BCryptPasswordEncoder();
-        if(passwordEncoder.matches(password, url.getPassword())) {
+        Boolean pwdOk = true;
+        Boolean captchaOk = true;
+        if (url.getUsePwd()) {
+            pwdOk = false;
+            passwordEncoder = new BCryptPasswordEncoder();
+            if(passwordEncoder.matches(password, url.getPassword())) {
+                pwdOk = true;
+            }
+        }
+        if (url.getUseReCAPTCHA()) {
+            System.out.println(gRecaptchaResponse);
+            captchaOk = VerifyRecaptcha.verify(gRecaptchaResponse);
+        }
+        if (pwdOk && captchaOk) {
             this.incrementVisitCounter(url);
             return "redirect:" + url.getLongUrl();
         }

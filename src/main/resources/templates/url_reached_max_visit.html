@@ -1,10 +1,14 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="base"
+>
 <head>
     <title>Breizh Link</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<h1>This url reached is visit limit :(</h1>
+<section layout:fragment="content">
+    <h1>This url reached is visit limit :(</h1>
+</section>
 </body>
 </html>

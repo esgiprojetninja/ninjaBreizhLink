@@ -1,22 +1,23 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Breizh Link</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="base"
+>
 <body>
-<h1>Please enter the url password</h1>
-<form action="#" th:action="@{/url/pwd}" method="post">
-    <!--/*@thymesVar id="url_id" type="java.int"*/-->`
-    <input type="hidden" th:value="${url_id}" th:attr="name='url_id'" />
-    <!--/*@thymesVar id="use_pwd" type="java.lang.Boolean"*/-->
-    <div th:if="${use_pwd}">
-        <p>Password: <input type="password" name="password" /></p>
-    </div>
-    <!--/*@thymesVar id="use_captcha" type="java.lang.Boolean"*/-->
-    <div th:if="${use_captcha}" class="g-recaptcha" data-sitekey="6LdT-SgUAAAAAHWUNCDDM3BcFzEPyoKRkMvnOB2r"></div>
-    <p><input type="submit" value="Submit" /></p>
-</form>
+<section layout:fragment="content">
+    <h1>Please enter the url password</h1>
+    <form action="#" th:action="@{/url/pwd}" method="post">
+        <!--/*@thymesVar id="url_id" type="java.int"*/-->
+        <input type="hidden" th:value="${url_id}" th:attr="name='url_id'" />
+        <!--/*@thymesVar id="use_pwd" type="java.lang.Boolean"*/-->
+        <div th:if="${use_pwd}">
+            <p>Password: <input type="password" name="password" /></p>
+        </div>
+        <!--/*@thymesVar id="use_captcha" type="java.lang.Boolean"*/-->
+        <div th:if="${use_captcha}" class="g-recaptcha" data-sitekey="6LdT-SgUAAAAAHWUNCDDM3BcFzEPyoKRkMvnOB2r"></div>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+</section>
+
 </body>
 </html>

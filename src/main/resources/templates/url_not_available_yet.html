@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Breizh Link</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="base"
+>
 <body>
-<h1>The url is not available until <!--/*@thymesVar id="date" type="org.joda.time.DateTime"*/-->
-<span th:text="${date}"/></h1>
+<section layout:fragment="content">
+    <h1>The url is not available until <!--/*@thymesVar id="date" type="org.joda.time.DateTime"*/-->
+        <span th:text="${date}"/>
+    </h1>
+</section>
 </body>
 </html>

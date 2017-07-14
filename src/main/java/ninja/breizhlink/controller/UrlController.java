@@ -109,6 +109,9 @@ public class UrlController {
     @RequestMapping("/{shortUrl}")
     public String handleRedirect(@PathVariable String shortUrl, Model model) {
         Url url = urlRepository.findByShortUrl(shortUrl);
+        if (url == null) {
+            return "url_not_found";
+        }
         if(url.getLimitVisits()) {
             if (urlVisitRepository.countUrlVisit(url) >= url.getMaxVisits()) {
                 return "url_reached_max_visit";

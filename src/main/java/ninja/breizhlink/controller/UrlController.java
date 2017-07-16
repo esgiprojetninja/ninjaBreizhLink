@@ -21,10 +21,6 @@ import org.springframework.ui.Model;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @CrossOrigin(origins = "http://b.li:8080")
@@ -73,7 +69,6 @@ public class UrlController {
         url.setUseReCAPTCHA(useReCAPTCHA != 0);
         url.setLimitVisits(limitVisits != 0);
         url.setMaxVisits(maxVisits);
-        System.out.println(url);
         Url savedUrl = urlRepository.save(url);
         if (url.getUsePwd()) {
             passwordEncoder = new BCryptPasswordEncoder();
@@ -195,7 +190,7 @@ public class UrlController {
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         sb.append(id);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 3; i++) {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }
@@ -208,6 +203,5 @@ public class UrlController {
         uv.setDate(new Date());
         urlVisitRepository.save(uv);
         int count = urlVisitRepository.countUrlVisit(url);
-        System.out.println("== Cette url a été visitée " + count + " fois. ==");
     }
 }

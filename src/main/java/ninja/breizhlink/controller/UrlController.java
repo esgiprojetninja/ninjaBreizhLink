@@ -24,7 +24,7 @@ import java.util.Random;
 
 @Controller
 @CrossOrigin(origins = "http://b.li:8080")
-@RequestMapping(path="url")
+@RequestMapping(path="url") // Mapp toutes les requètes commençant par "url"
 public class UrlController {
     @Autowired
     private UrlRepository urlRepository;
@@ -36,7 +36,7 @@ public class UrlController {
     @Autowired
     private SessionIdentifierManager sessionIdentifierManager;
 
-    @PostMapping(path="/add")
+    @PostMapping(path="/add") // Map les requètes POST sur /url/add
     public @ResponseBody
     ResponseEntity addNewUrl(
             @RequestParam String password,

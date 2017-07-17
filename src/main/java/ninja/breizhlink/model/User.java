@@ -1,6 +1,8 @@
 package ninja.breizhlink.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -18,6 +20,7 @@ public class User {
     private String password = "";
     @Transient
     private String passwordConfirm = "";
+    @JsonIgnore
     private String sessionID = "";
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Url> urls = new ArrayList<Url>();
